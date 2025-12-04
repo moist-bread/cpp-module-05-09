@@ -1,0 +1,8 @@
+*/.vscode
+.vscode
+*/obj
+*.out
+*.o
+*.a
+*.json
+mommy
