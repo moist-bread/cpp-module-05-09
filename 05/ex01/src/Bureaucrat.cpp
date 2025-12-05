@@ -97,12 +97,14 @@ void Bureaucrat::signForm(Form &form)
 	try
 	{
 		form.beSigned(*this);
-		std::cout << *this << GRN " signed " DEF << form << std::endl;
+		std::cout << *this << GRN " signed the following Form:" DEF << std::endl;
+		std::cout << form << std::endl;
 	}
 	catch(std::exception &e)
 	{
-		std::cout << *this << RED " couldn't sign " DEF << form;
-		std::cout << " because of " << e.what() << std::endl;
+		std::cout << *this << RED " couldn't sign the following Form:" DEF << std::endl;
+		std::cout << form;
+		std::cout << RED "motive: " DEF << e.what() << std::endl << std::endl;
 	}
 }
 

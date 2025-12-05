@@ -97,15 +97,28 @@ void Bureaucrat::signForm(AForm &form)
 	try
 	{
 		form.beSigned(*this);
-		std::cout << *this << GRN " signed " DEF << form << std::endl;
+		std::cout << *this << GRN " signed the following Form:" DEF << std::endl;
+		std::cout << form << std::endl;
 	}
 	catch(std::exception &e)
 	{
-		std::cout << *this << RED " couldn't sign " DEF << form;
-		std::cout << " because of " << e.what() << std::endl;
+		std::cout << *this << RED " couldn't sign the following Form:" DEF << std::endl;
+		std::cout << form;
+		std::cout << RED "motive: " DEF << e.what() << std::endl << std::endl;
 	}
 }
 
+void Bureaucrat::executeForm(AForm const & form) const
+{
+	try
+	{
+		form.execute(*this);
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << _name <<  RED " couldn't execute form, because of " << e.what() << std::endl;
+	}
+}
 const char *Bureaucrat::GradeTooHighException::what(void) const throw()
 {
 	return ("Bureaucrat:: high grade");

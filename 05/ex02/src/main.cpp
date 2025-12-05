@@ -6,67 +6,68 @@
 /*   By: rduro-pe <rduro-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 13:01:53 by rduro-pe          #+#    #+#             */
-/*   Updated: 2025/12/02 15:03:20 by rduro-pe         ###   ########.fr       */
+/*   Updated: 2025/12/05 18:20:13 by rduro-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cstdlib>
-#include "../inc/Bureaucrat.hpp"
-#include "../inc/AForm.hpp"
+#include "../inc/ShrubberyCreationForm.hpp"
+#include "../inc/RobotomyRequestForm.hpp"
+#include "../inc/PresidentialPardonForm.hpp"
 
 Bureaucrat *try_catch_bureaucrat(const std::string &name, int grade);
-AForm *try_catch_form(const std::string &name, int grade_to_sign, int grade_to_exe);
-void	try_catch_func(Bureaucrat *bureaucrat, void (Bureaucrat::*func)());
+AForm *try_catch_multi_form(const std::string &form_type, const std::string &target);
 
 int main(int ac, char **av)
 {
 	std::cout << std::endl;
-	std::cout << CYN ">>┈┈┈>   FORM UP, MAGGOTS! 🤑💰";
+	std::cout << CYN ">>┈┈┈>   NO, YOU NEED FORM 28B NOT 28C... 🤑💰";
 	std::cout << DEF << std::endl << std::endl;
 
-	if (ac != 3)
-		return (std::cout << "usage: ./maggots [grade to sign] [grade to execute]" << std::endl, 2);
+	if (ac != 5)
+	{
+		std::cout << "usage: ./28b [form type =(tree, robot, president)] [form target]" << std::endl;
+		std::cout << "[signer bureaucrat grade] [executer bureaucrat grade]" << std::endl;
+		return (2);
+	}
 	
-	int num_1 = std::atoi(av[1]);
-	int num_2 = std::atoi(av[2]);
+	std::string form_type = av[1];
+	std::string target = av[2];
+	int sign_grade = std::atoi(av[3]);
+	int exe_grade = std::atoi(av[4]);
 	
-	AForm *license = try_catch_form("license", num_1, num_2);
-	if (!license)
+	AForm *form = try_catch_multi_form(form_type, target);
+	if (!form)
 		return (1);
 	std::cout << std::endl << std::endl;
 	
-	AForm *warranty = try_catch_form("warranty", num_1 - 1, num_2 - 1);
-	if (!warranty)
-		return (delete license, 1);
-	std::cout << std::endl << std::endl;
-	
-	Bureaucrat *a = try_catch_bureaucrat("first guy", num_2);
+	Bureaucrat *a = try_catch_bureaucrat("guy that signs", sign_grade);
 	if (a)
 	{
-		a->signForm(*license);
-		a->signForm(*warranty);
+		std::cout << std::endl;
+		a->signForm(*form);
 		delete a;
 		std::cout << std::endl << std::endl;
 	}
 	
-	Bureaucrat *b = try_catch_bureaucrat("second guy", num_1);
+	Bureaucrat *b = try_catch_bureaucrat("guy that executes", exe_grade);
 	if (b)
 	{
-		b->signForm(*license);
-		b->signForm(*warranty);
+		std::cout << std::endl;
+		b->executeForm(*form);
+		std::cout << std::endl;
 		delete b;
 		std::cout << std::endl << std::endl;
 	}
 	
-	delete license;
-	delete warranty;
+	delete form;
 	return (0);
 }
 
 Bureaucrat *try_catch_bureaucrat(const std::string &name, int grade)
 {
-	std::cout << BLU "try-catch with Bureaucrat name [" << name << "] and grade [" << grade << "]";
-	std::cout << DEF << std::endl;
+	std::cout << UBLU "try-catch w/ Bureaucrat name [" << name << "] and grade [" << grade << "]";
+	std::cout << DEF << std::endl << std::endl;
 	try
 	{
 		Bureaucrat *bureaucrat = new Bureaucrat(name, grade);
@@ -75,37 +76,46 @@ Bureaucrat *try_catch_bureaucrat(const std::string &name, int grade)
 	}
 	catch (std::exception &e)
 	{
-		std::cout << e.what() << std::endl;
+		std::cerr << e.what() << std::endl;
 	}
 	return (NULL);
 }
 
-AForm *try_catch_form(const std::string &name, int grade_to_sign, int grade_to_exe)
+AForm *try_catch_multi_form(const std::string &form_type, const std::string &target)
 {
-	std::cout << BLU "try-catch with Form name [" << name << "], grade_to_sign [" << grade_to_sign << "] and grade_to_exe [" << grade_to_exe << "]";
-	std::cout << DEF << std::endl;
+	std::cout << UBLU "try-catch multi form of type [" << form_type << "], target [" << target << "]";
+	std::cout << DEF << std::endl << std::endl;
 	try
 	{
-		AForm *form = new AForm(name, grade_to_sign, grade_to_exe);
+		std::string types[3] = {"tree", "robot", "president"};
+		
+		int i = -1;
+		while (++i < 3)
+			if (form_type == types[i])
+				break;
+		AForm *form;
+		switch (i)
+		{
+		case 0:
+			form = new ShrubberyCreationForm(target);
+			break;
+		case 1:
+			form = new RobotomyRequestForm(target);
+			break;
+		case 2:
+			form = new PresidentialPardonForm(target);
+			break;
+		default:
+			std::cout << "invalid type..." << std::endl;
+			form = NULL;
+			break;
+		}
 		std::cout << "(didn't get thrown)" << std::endl;
 		return (form);
 	}
 	catch (std::exception &e)
 	{
-		std::cout << e.what() << std::endl;
+		std::cerr << e.what() << std::endl;
 	}
 	return (NULL);
-}
-
-void	try_catch_func(Bureaucrat *bureaucrat, void (Bureaucrat::*func)())
-{
-	try
-	{
-		(bureaucrat->*func)();
-		std::cout << "(didn't get thrown)" << std::endl;
-	}
-	catch (std::exception &e)
-	{
-		std::cout << e.what() << std::endl;
-	}
 }

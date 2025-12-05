@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   AForm.cpp                                         :+:      :+:    :+:   */
+/*   ShrubberyCreationForm.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rduro-pe <rduro-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,108 +10,85 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/AForm.hpp"
+#include "../inc/ShrubberyCreationForm.hpp"
 
-AForm::AForm(void) : _name("Nameless"), _signed(false), _grade_to_sign(150), _grade_to_execute(150)
+ShrubberyCreationForm::ShrubberyCreationForm(void) : AForm("ShrubberyCreationForm", 145, 137)
 {
-	std::cout << GRN "an AForm ";
+	_target = "default";
+	std::cout << GRN "a ShrubberyCreationForm ";
 	std::cout << UCYN "has been printed...";
 	std::cout << DEF << std::endl;
+	std::cout << *this;
 }
 
-AForm::AForm(const std::string &name, int grade_to_sign, int grade_to_exe) : _name(name), _signed(false), _grade_to_sign(grade_to_sign), _grade_to_execute(grade_to_exe)
+ShrubberyCreationForm::ShrubberyCreationForm(const std::string &target) : AForm("ShrubberyCreationForm", 145, 137)
 {
-	if (_grade_to_sign < 1 || _grade_to_execute < 1)
-		throw(GradeTooHighException());
-	if (_grade_to_sign > 150 || _grade_to_execute > 150)
-		throw(GradeTooLowException());
-	std::cout << GRN "an AForm ";
+	_target = target;
+	std::cout << GRN "a ShrubberyCreationForm ";
 	std::cout << UCYN "has been printed...";
 	std::cout << DEF << std::endl;
+	std::cout << *this;
 }
 
-AForm::AForm(AForm const &source) : _name(source.get_name()), _grade_to_sign(source.get_grade_to_sign()), _grade_to_execute(source.get_grade_to_execute())
+ShrubberyCreationForm::ShrubberyCreationForm(ShrubberyCreationForm const &source) : AForm(source)
 {
 	*this = source;
-	std::cout << GRN "an AForm ";
+	std::cout << GRN "a ShrubberyCreationForm ";
 	std::cout << UYEL "has been scanned and copied";
 	std::cout << DEF << std::endl;
+	std::cout << *this;
 }
 
-AForm::~AForm(void)
+ShrubberyCreationForm::~ShrubberyCreationForm(void)
 {
-	std::cout << GRN "an AForm ";
+	std::cout << GRN "a ShrubberyCreationForm ";
 	std::cout << URED "has been shredded";
 	std::cout << DEF << std::endl;
 }
 
-AForm &AForm::operator=(AForm const &source)
+ShrubberyCreationForm &ShrubberyCreationForm::operator=(ShrubberyCreationForm const &source)
 {
 	if (this != &source)
-		_signed = source.get_signed();
+		_target = source.get_signed();
 	return (*this);
 }
 
-std::string AForm::get_name(void) const
+void ShrubberyCreationForm::execute(Bureaucrat const &executor) const
 {
-	return (_name);
-}
-
-bool AForm::get_signed(void) const
-{
-	return (_signed);
-}
-
-int AForm::get_grade_to_sign(void) const
-{
-	return (_grade_to_sign);
-}
-
-int AForm::get_grade_to_execute(void) const
-{
-	return (_grade_to_execute);
-}
-
-std::string AForm::get_target(void) const
-{
-	return (_target);
-}
-
-void AForm::beSigned(Bureaucrat &source)
-{
-	if (source.getGrade() <= _grade_to_sign)
+	if (!this->get_signed())
 	{
-		_signed = true;
-		std::cout << GRN "AForm [ " << _name << " ] is now signed ☑";
-		std::cout << DEF << std::endl;
+		throw(FormNotSignedException());
 	}
-	else
+	if (executor.getGrade() > this->get_grade_to_execute())
+	{
 		throw(GradeTooLowException());
+	}
+
+	std::string path = _target + "_shrubbery";
+	std::ofstream output(path.c_str());
+
+	if (!output.is_open())
+	{
+		std::cerr << "error in opening file during the execution of " << this->get_name() << std::endl;
+		return;
+	}
+	output << ASCIITREE << std::endl;
+	output.close();
+
+	std::cout << executor.getName() << GRN " has executed " << this->get_name() << std::endl;
+	std::cout << DEF "↳  the shrubbery has been created at " GRN << path;
+	std::cout << DEF << std::endl;
 }
 
-const char *AForm::GradeTooHighException::what(void) const throw()
-{
-	return ("grade too high");
-}
-
-const char *AForm::GradeTooLowException::what(void) const throw()
-{
-	return ("grade too low");
-}
-
-const char *AForm::FormNotSignedException::what(void) const throw()
-{
-	return ("form not signed");
-}
-
-std::ostream &operator<<(std::ostream &out, AForm const &source)
+std::ostream &operator<<(std::ostream &out, ShrubberyCreationForm const &source)
 {
 	out << "╆─────────────────────────────────────────────── ─--- -- -" << std::endl;
-	out << "╵   " << "AForm: " << source.get_name() << std::endl;
+	out << "╵   " << "Form: " << source.get_name() << std::endl;
 	if (source.get_signed())
 		out << "╵   " GRN "signed ☑" DEF << std::endl;
 	else
 		out << "╵   " RED "not signed ☒" DEF << std::endl;
+	out << ":   " MAG "▖ TARGETTED AT: " DEF << source.get_target()<< std::endl;
 	out << "╵   " YEL "▖ GRADE TO SIGN: " DEF << source.get_grade_to_sign();
 	out << "   " BLU "▖ GRADE TO EXE: " DEF << source.get_grade_to_execute() << std::endl;
 	out << "╆─────────────────────────────────────────────── ─--- -- -" << std::endl;

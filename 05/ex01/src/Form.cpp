@@ -14,10 +14,10 @@
 
 Form::Form(void) : _name("Nameless"), _signed(false), _grade_to_sign(150), _grade_to_execute(150)
 {
-	std::cout << GRN "the ";
-	std::cout << *this;
-	std::cout << " " UCYN "has been printed";
+	std::cout << GRN "a Form ";
+	std::cout << UCYN "has been printed...";
 	std::cout << DEF << std::endl;
+	std::cout << *this;
 }
 
 Form::Form(const std::string &name, int grade_to_sign, int grade_to_exe) : _name(name),  _signed(false), _grade_to_sign(grade_to_sign), _grade_to_execute(grade_to_exe)
@@ -26,27 +26,27 @@ Form::Form(const std::string &name, int grade_to_sign, int grade_to_exe) : _name
 		throw(GradeTooHighException());
 	if (_grade_to_sign > 150 || _grade_to_execute > 150)
 		throw(GradeTooLowException());
-	std::cout << GRN "the ";
-	std::cout << *this;
-	std::cout << " " UCYN "has been printed";
+	std::cout << GRN "a Form ";
+	std::cout << UCYN "has been printed...";
 	std::cout << DEF << std::endl;
+	std::cout << *this;
 }
 
 Form::Form(Form const &source) : _name(source.get_name()), _grade_to_sign(source.get_grade_to_sign()),  _grade_to_execute(source.get_grade_to_execute())
 {
 	*this = source;
-	std::cout << GRN "the ";
-	std::cout << *this;
-	std::cout << " " UYEL "has been scanned and copied";
+	std::cout << GRN "a Form ";
+	std::cout << UYEL "has been scanned and copied";
 	std::cout << DEF << std::endl;
+	std::cout << *this;
 }
 
 Form::~Form(void)
 {
-	std::cout << GRN "the ";
-	std::cout << *this;
-	std::cout << " " URED "has been shredded";
+	std::cout << GRN "a Form ";
+	std::cout << URED "has been shredded";
 	std::cout << DEF << std::endl;
+	std::cout << *this;
 }
 
 Form &Form::operator=(Form const &source)
@@ -100,12 +100,16 @@ const char *Form::GradeTooLowException::what(void) const throw()
 
 std::ostream &operator<<(std::ostream &out, Form const &source)
 {
-	out << "Form [ " << source.get_name() << " ]";
+	out << "╆─────────────────────────────────────────────── ─--- -- -" << std::endl;
+	out << "╵   " << "Form: " << source.get_name() << std::endl;
 	if (source.get_signed())
-		out << " signed ☑";
+		out << "╵   "  GRN "signed ☑" DEF << std::endl;
 	else
-		out << " not signed ☒";
-	out << ", grade to sign [ " << source.get_grade_to_sign() << " ]";
-	out << ", grade to execute [ " << source.get_grade_to_execute() << " ]";
+		out << "╵   " RED "not signed ☒" DEF << std::endl;
+	out << "╵   " YEL "▖ GRADE TO SIGN: " DEF << source.get_grade_to_sign();
+	out << "   " BLU "▖ GRADE TO EXE: " DEF << source.get_grade_to_execute() << std::endl;
+	out << "╆─────────────────────────────────────────────── ─--- -- -" << std::endl;
+	out << std::endl;
+
 	return (out);
 }

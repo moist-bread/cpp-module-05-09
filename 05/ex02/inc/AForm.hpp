@@ -6,7 +6,7 @@
 /*   By: rduro-pe <rduro-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 14:22:35 by rduro-pe          #+#    #+#             */
-/*   Updated: 2025/12/03 13:57:17 by rduro-pe         ###   ########.fr       */
+/*   Updated: 2025/12/05 17:17:32 by rduro-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ public:
 	bool get_signed(void) const;
 	int get_grade_to_sign(void) const;
 	int get_grade_to_execute(void) const;
+    std::string get_target(void) const;
 
 	void beSigned(Bureaucrat &source);
 	virtual void execute(Bureaucrat const & executor) const = 0;
@@ -50,6 +51,15 @@ public:
 		const char *what(void) const throw();
 	};
 
+	class FormNotSignedException : public std::exception
+	{
+	public:
+		const char *what(void) const throw();
+	};
+
+protected:
+    std::string _target;
+	
 private:
 	const std::string _name;
 	bool _signed;

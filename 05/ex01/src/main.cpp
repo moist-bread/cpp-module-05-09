@@ -6,7 +6,7 @@
 /*   By: rduro-pe <rduro-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 13:01:53 by rduro-pe          #+#    #+#             */
-/*   Updated: 2025/12/02 14:56:02 by rduro-pe         ###   ########.fr       */
+/*   Updated: 2025/12/05 17:20:48 by rduro-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ int main(int ac, char **av)
 	Bureaucrat *a = try_catch_bureaucrat("first guy", num_2);
 	if (a)
 	{
+		std::cout << std::endl;
 		a->signForm(*license);
 		a->signForm(*warranty);
 		delete a;
@@ -52,6 +53,7 @@ int main(int ac, char **av)
 	Bureaucrat *b = try_catch_bureaucrat("second guy", num_1);
 	if (b)
 	{
+		std::cout << std::endl;
 		b->signForm(*license);
 		b->signForm(*warranty);
 		delete b;
@@ -65,8 +67,8 @@ int main(int ac, char **av)
 
 Bureaucrat *try_catch_bureaucrat(const std::string &name, int grade)
 {
-	std::cout << BLU "try-catch with Bureaucrat name [" << name << "] and grade [" << grade << "]";
-	std::cout << DEF << std::endl;
+	std::cout << UBLU "try-catch w/ Bureaucrat name [" << name << "] and grade [" << grade << "]";
+	std::cout << DEF << std::endl << std::endl;
 	try
 	{
 		Bureaucrat *bureaucrat = new Bureaucrat(name, grade);
@@ -75,15 +77,15 @@ Bureaucrat *try_catch_bureaucrat(const std::string &name, int grade)
 	}
 	catch (std::exception &e)
 	{
-		std::cout << e.what() << std::endl;
+		std::cerr << e.what() << std::endl;
 	}
 	return (NULL);
 }
 
 Form *try_catch_form(const std::string &name, int grade_to_sign, int grade_to_exe)
 {
-	std::cout << BLU "try-catch with Form name [" << name << "], grade_to_sign [" << grade_to_sign << "] and grade_to_exe [" << grade_to_exe << "]";
-	std::cout << DEF << std::endl;
+	std::cout << UBLU "try-catch w/ Form name [" << name << "], sign grade [" << grade_to_sign << "] and exe grade [" << grade_to_exe << "]";
+	std::cout << DEF << std::endl << std::endl;
 	try
 	{
 		Form *form = new Form(name, grade_to_sign, grade_to_exe);
@@ -92,7 +94,7 @@ Form *try_catch_form(const std::string &name, int grade_to_sign, int grade_to_ex
 	}
 	catch (std::exception &e)
 	{
-		std::cout << e.what() << std::endl;
+		std::cerr << e.what() << std::endl;
 	}
 	return (NULL);
 }
@@ -106,6 +108,6 @@ void	try_catch_func(Bureaucrat *bureaucrat, void (Bureaucrat::*func)())
 	}
 	catch (std::exception &e)
 	{
-		std::cout << e.what() << std::endl;
+		std::cerr << e.what() << std::endl;
 	}
 }

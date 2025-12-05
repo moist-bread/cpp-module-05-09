@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   AForm.cpp                                         :+:      :+:    :+:   */
+/*   PresidentialPardonForm.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rduro-pe <rduro-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,108 +10,74 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/AForm.hpp"
+#include "../inc/PresidentialPardonForm.hpp"
 
-AForm::AForm(void) : _name("Nameless"), _signed(false), _grade_to_sign(150), _grade_to_execute(150)
+PresidentialPardonForm::PresidentialPardonForm(void) : AForm("PresidentialPardonForm", 25, 5)
 {
-	std::cout << GRN "an AForm ";
+	_target = "default";
+	std::cout << GRN "a PresidentialPardonForm ";
 	std::cout << UCYN "has been printed...";
 	std::cout << DEF << std::endl;
+	std::cout << *this;
 }
 
-AForm::AForm(const std::string &name, int grade_to_sign, int grade_to_exe) : _name(name), _signed(false), _grade_to_sign(grade_to_sign), _grade_to_execute(grade_to_exe)
+PresidentialPardonForm::PresidentialPardonForm(const std::string &target) : AForm("PresidentialPardonForm", 25, 5)
 {
-	if (_grade_to_sign < 1 || _grade_to_execute < 1)
-		throw(GradeTooHighException());
-	if (_grade_to_sign > 150 || _grade_to_execute > 150)
-		throw(GradeTooLowException());
-	std::cout << GRN "an AForm ";
+	_target = target;
+	std::cout << GRN "a PresidentialPardonForm ";
 	std::cout << UCYN "has been printed...";
 	std::cout << DEF << std::endl;
+	std::cout << *this;
 }
 
-AForm::AForm(AForm const &source) : _name(source.get_name()), _grade_to_sign(source.get_grade_to_sign()), _grade_to_execute(source.get_grade_to_execute())
+PresidentialPardonForm::PresidentialPardonForm(PresidentialPardonForm const &source) : AForm(source)
 {
 	*this = source;
-	std::cout << GRN "an AForm ";
+	std::cout << GRN "a PresidentialPardonForm ";
 	std::cout << UYEL "has been scanned and copied";
 	std::cout << DEF << std::endl;
+	std::cout << *this;
 }
 
-AForm::~AForm(void)
+PresidentialPardonForm::~PresidentialPardonForm(void)
 {
-	std::cout << GRN "an AForm ";
+	std::cout << GRN "a PresidentialPardonForm ";
 	std::cout << URED "has been shredded";
 	std::cout << DEF << std::endl;
 }
 
-AForm &AForm::operator=(AForm const &source)
+PresidentialPardonForm &PresidentialPardonForm::operator=(PresidentialPardonForm const &source)
 {
 	if (this != &source)
-		_signed = source.get_signed();
+		_target = source.get_signed();
 	return (*this);
 }
 
-std::string AForm::get_name(void) const
+void PresidentialPardonForm::execute(Bureaucrat const &executor) const
 {
-	return (_name);
-}
-
-bool AForm::get_signed(void) const
-{
-	return (_signed);
-}
-
-int AForm::get_grade_to_sign(void) const
-{
-	return (_grade_to_sign);
-}
-
-int AForm::get_grade_to_execute(void) const
-{
-	return (_grade_to_execute);
-}
-
-std::string AForm::get_target(void) const
-{
-	return (_target);
-}
-
-void AForm::beSigned(Bureaucrat &source)
-{
-	if (source.getGrade() <= _grade_to_sign)
+	if (!this->get_signed())
 	{
-		_signed = true;
-		std::cout << GRN "AForm [ " << _name << " ] is now signed ☑";
-		std::cout << DEF << std::endl;
+		throw(FormNotSignedException());
 	}
-	else
+	if (executor.getGrade() > this->get_grade_to_execute())
+	{
 		throw(GradeTooLowException());
+	}
+
+	std::cout << executor.getName() << GRN " has executed " << this->get_name() << std::endl;
+	std::cout << DEF "↳  " << _target << " has been pardoned by Zaphod Beeblebrox";
+	std::cout << DEF << std::endl;
 }
 
-const char *AForm::GradeTooHighException::what(void) const throw()
-{
-	return ("grade too high");
-}
-
-const char *AForm::GradeTooLowException::what(void) const throw()
-{
-	return ("grade too low");
-}
-
-const char *AForm::FormNotSignedException::what(void) const throw()
-{
-	return ("form not signed");
-}
-
-std::ostream &operator<<(std::ostream &out, AForm const &source)
+std::ostream &operator<<(std::ostream &out, PresidentialPardonForm const &source)
 {
 	out << "╆─────────────────────────────────────────────── ─--- -- -" << std::endl;
-	out << "╵   " << "AForm: " << source.get_name() << std::endl;
+	out << "╵   " << "Form: " << source.get_name() << std::endl;
 	if (source.get_signed())
 		out << "╵   " GRN "signed ☑" DEF << std::endl;
 	else
 		out << "╵   " RED "not signed ☒" DEF << std::endl;
+	out << ":   " MAG "▖ TARGETTED AT: " DEF << source.get_target() << std::endl;
 	out << "╵   " YEL "▖ GRADE TO SIGN: " DEF << source.get_grade_to_sign();
 	out << "   " BLU "▖ GRADE TO EXE: " DEF << source.get_grade_to_execute() << std::endl;
 	out << "╆─────────────────────────────────────────────── ─--- -- -" << std::endl;
