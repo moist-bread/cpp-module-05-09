@@ -6,7 +6,7 @@
 #    By: rduro-pe <rduro-pe@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/29 12:30:07 by rduro-pe          #+#    #+#              #
-#    Updated: 2025/11/29 15:43:11 by rduro-pe         ###   ########.fr        #
+#    Updated: 2025/12/08 12:51:47 by rduro-pe         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,10 +50,10 @@ exe: all
 
 rexe: re
 	@echo "\n"
-	./$(NAME)
+	./$(NAME) 148
 
 val: all
-	$(VAL) ./$(NAME) 148
+	$(VAL) ./$(NAME) 151
 
 # -->┊( STANDARD RULES )┊.´-★☆★
 clean:

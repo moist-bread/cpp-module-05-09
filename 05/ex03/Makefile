@@ -6,12 +6,12 @@
 #    By: rduro-pe <rduro-pe@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/29 12:30:07 by rduro-pe          #+#    #+#              #
-#    Updated: 2025/12/08 12:43:27 by rduro-pe         ###   ########.fr        #
+#    Updated: 2025/12/08 12:43:34 by rduro-pe         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # -->┊( NAMES )┊.´-★☆★
-NAME	=	28b
+NAME	=	printer
 
 # -->┊( COMMANDS AND FLAGS )┊.´-★☆★
 CXX	=	c++
@@ -24,7 +24,7 @@ OBJ_DIR	=	obj
 
 # -->┊( SOURCE AND OBJS )┊.´-★☆★
 SOURCE	=	main.cpp Bureaucrat.cpp AForm.cpp ShrubberyCreationForm.cpp \
-			RobotomyRequestForm.cpp PresidentialPardonForm.cpp
+			RobotomyRequestForm.cpp PresidentialPardonForm.cpp Intern.cpp
 
 SRC		=	$(addprefix $(SRC_DIR)/, $(SOURCE))
 OBJS	=	$(addprefix $(OBJ_DIR)/, $(SOURCE:.cpp=.o))

@@ -6,7 +6,7 @@
 /*   By: rduro-pe <rduro-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 14:22:35 by rduro-pe          #+#    #+#             */
-/*   Updated: 2025/12/02 12:57:46 by rduro-pe         ###   ########.fr       */
+/*   Updated: 2025/12/08 15:51:13 by rduro-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ public:
 	Bureaucrat(void); 						// default constructor
 	Bureaucrat(const std::string &name, int grade);
 	Bureaucrat(Bureaucrat const &source);	// copy constructor
-	virtual ~Bureaucrat(void);				// destructor
+	~Bureaucrat(void);				// destructor
 
 	Bureaucrat &operator=(Bureaucrat const &source); // copy assignment operator overload
 
