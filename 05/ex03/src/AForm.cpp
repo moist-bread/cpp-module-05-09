@@ -15,8 +15,7 @@
 AForm::AForm(void) : _name("Nameless"), _signed(false), _grade_to_sign(150), _grade_to_execute(150)
 {
 	std::cout << GRN "an AForm ";
-	std::cout << UCYN "has been printed...";
-	std::cout << DEF << std::endl;
+	std::cout << UCYN "has been printed..." DEF << std::endl;
 }
 
 AForm::AForm(const std::string &name, int grade_to_sign, int grade_to_exe) : _name(name), _signed(false), _grade_to_sign(grade_to_sign), _grade_to_execute(grade_to_exe)
@@ -26,23 +25,20 @@ AForm::AForm(const std::string &name, int grade_to_sign, int grade_to_exe) : _na
 	if (_grade_to_sign > 150 || _grade_to_execute > 150)
 		throw(GradeTooLowException());
 	std::cout << GRN "an AForm ";
-	std::cout << UCYN "has been printed...";
-	std::cout << DEF << std::endl;
+	std::cout << UCYN "has been printed..." DEF << std::endl;
 }
 
 AForm::AForm(AForm const &source) : _name(source.get_name()), _grade_to_sign(source.get_grade_to_sign()), _grade_to_execute(source.get_grade_to_execute())
 {
 	*this = source;
 	std::cout << GRN "an AForm ";
-	std::cout << UYEL "has been scanned and copied";
-	std::cout << DEF << std::endl;
+	std::cout << UYEL "has been scanned and copied" DEF << std::endl;
 }
 
 AForm::~AForm(void)
 {
 	std::cout << GRN "an AForm ";
-	std::cout << URED "has been shredded";
-	std::cout << DEF << std::endl;
+	std::cout << URED "has been shredded" DEF << std::endl;
 }
 
 AForm &AForm::operator=(AForm const &source)

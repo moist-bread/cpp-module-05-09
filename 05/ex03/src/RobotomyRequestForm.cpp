@@ -17,8 +17,7 @@ RobotomyRequestForm::RobotomyRequestForm(void) : AForm("RobotomyRequestForm", 72
 	srand(time(NULL));
 	_target = "default";
 	std::cout << GRN "a RobotomyRequestForm ";
-	std::cout << UCYN "has been printed...";
-	std::cout << DEF << std::endl;
+	std::cout << UCYN "has been printed..." DEF << std::endl;
 	std::cout << *this;
 }
 
@@ -27,8 +26,7 @@ RobotomyRequestForm::RobotomyRequestForm(const std::string &target) : AForm("Rob
 	srand(time(NULL));
 	_target = target;
 	std::cout << GRN "a RobotomyRequestForm ";
-	std::cout << UCYN "has been printed...";
-	std::cout << DEF << std::endl;
+	std::cout << UCYN "has been printed..." DEF << std::endl;
 	std::cout << *this;
 }
 
@@ -37,16 +35,14 @@ RobotomyRequestForm::RobotomyRequestForm(RobotomyRequestForm const &source) : AF
 	srand(time(NULL));
 	*this = source;
 	std::cout << GRN "a RobotomyRequestForm ";
-	std::cout << UYEL "has been scanned and copied";
-	std::cout << DEF << std::endl;
+	std::cout << UYEL "has been scanned and copied" DEF << std::endl;
 	std::cout << *this;
 }
 
 RobotomyRequestForm::~RobotomyRequestForm(void)
 {
 	std::cout << GRN "a RobotomyRequestForm ";
-	std::cout << URED "has been shredded";
-	std::cout << DEF << std::endl;
+	std::cout << URED "has been shredded" DEF << std::endl;
 }
 
 RobotomyRequestForm &RobotomyRequestForm::operator=(RobotomyRequestForm const &source)

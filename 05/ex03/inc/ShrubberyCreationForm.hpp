@@ -6,7 +6,7 @@
 /*   By: rduro-pe <rduro-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 14:22:35 by rduro-pe          #+#    #+#             */
-/*   Updated: 2025/12/05 17:49:28 by rduro-pe         ###   ########.fr       */
+/*   Updated: 2025/12/09 10:57:32 by rduro-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,6 @@
 #include "AForm.hpp"
 #include <fstream>
 #include <cstdlib>
-
-// -->┊( SHRUBBERY CREATION FORM )┊.´-★☆★
-
-class ShrubberyCreationForm : public AForm
-{
-public:
-    ShrubberyCreationForm(void); // default constructor
-    ShrubberyCreationForm(const std::string &target);
-    ShrubberyCreationForm(ShrubberyCreationForm const &source); // copy constructor
-    virtual ~ShrubberyCreationForm(void);                       // destructor
-
-    ShrubberyCreationForm &operator=(ShrubberyCreationForm const &source); // copy assignment operator overload
-
-    void execute(Bureaucrat const &executor) const;
-};
-
-std::ostream &operator<<(std::ostream &out, ShrubberyCreationForm const &source);
 
 //-‵,┊ text defines
 
@@ -60,3 +43,20 @@ xxxxxxx ≈≈    xxxx            xxx     xxxx                      xxxxx    x\n
        xx                xxxxxxxxx                               xxxx\n\
       xxx               xxx xxxxxxx                              xxxx\n\
      xxxxx              xx  xxxxxxxxxx                           xxxxx"
+
+// -->┊( SHRUBBERY CREATION FORM )┊.´-★☆★
+
+class ShrubberyCreationForm : public AForm
+{
+public:
+    ShrubberyCreationForm(void); // default constructor
+    ShrubberyCreationForm(const std::string &target);
+    ShrubberyCreationForm(ShrubberyCreationForm const &source); // copy constructor
+    virtual ~ShrubberyCreationForm(void);                       // destructor
+
+    ShrubberyCreationForm &operator=(ShrubberyCreationForm const &source); // copy assignment operator overload
+
+    void execute(Bureaucrat const &executor) const;
+};
+
+std::ostream &operator<<(std::ostream &out, ShrubberyCreationForm const &source);

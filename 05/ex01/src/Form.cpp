@@ -15,8 +15,7 @@
 Form::Form(void) : _name("Nameless"), _signed(false), _grade_to_sign(150), _grade_to_execute(150)
 {
 	std::cout << GRN "a Form ";
-	std::cout << UCYN "has been printed...";
-	std::cout << DEF << std::endl;
+	std::cout << UCYN "has been printed..." DEF << std::endl;
 	std::cout << *this;
 }
 
@@ -27,8 +26,7 @@ Form::Form(const std::string &name, int grade_to_sign, int grade_to_exe) : _name
 	if (_grade_to_sign > 150 || _grade_to_execute > 150)
 		throw(GradeTooLowException());
 	std::cout << GRN "a Form ";
-	std::cout << UCYN "has been printed...";
-	std::cout << DEF << std::endl;
+	std::cout << UCYN "has been printed..." DEF << std::endl;
 	std::cout << *this;
 }
 
@@ -36,16 +34,14 @@ Form::Form(Form const &source) : _name(source.get_name()), _grade_to_sign(source
 {
 	*this = source;
 	std::cout << GRN "a Form ";
-	std::cout << UYEL "has been scanned and copied";
-	std::cout << DEF << std::endl;
+	std::cout << UYEL "has been scanned and copied" DEF << std::endl;
 	std::cout << *this;
 }
 
 Form::~Form(void)
 {
 	std::cout << GRN "a Form ";
-	std::cout << URED "has been shredded";
-	std::cout << DEF << std::endl;
+	std::cout << URED "has been shredded" DEF << std::endl;
 	std::cout << *this;
 }
 

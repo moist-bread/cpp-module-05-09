@@ -16,8 +16,7 @@ ShrubberyCreationForm::ShrubberyCreationForm(void) : AForm("ShrubberyCreationFor
 {
 	_target = "default";
 	std::cout << GRN "a ShrubberyCreationForm ";
-	std::cout << UCYN "has been printed...";
-	std::cout << DEF << std::endl;
+	std::cout << UCYN "has been printed..." DEF << std::endl;
 	std::cout << *this;
 }
 
@@ -25,8 +24,7 @@ ShrubberyCreationForm::ShrubberyCreationForm(const std::string &target) : AForm(
 {
 	_target = target;
 	std::cout << GRN "a ShrubberyCreationForm ";
-	std::cout << UCYN "has been printed...";
-	std::cout << DEF << std::endl;
+	std::cout << UCYN "has been printed..." DEF << std::endl;
 	std::cout << *this;
 }
 
@@ -34,16 +32,14 @@ ShrubberyCreationForm::ShrubberyCreationForm(ShrubberyCreationForm const &source
 {
 	*this = source;
 	std::cout << GRN "a ShrubberyCreationForm ";
-	std::cout << UYEL "has been scanned and copied";
-	std::cout << DEF << std::endl;
+	std::cout << UYEL "has been scanned and copied" DEF << std::endl;
 	std::cout << *this;
 }
 
 ShrubberyCreationForm::~ShrubberyCreationForm(void)
 {
 	std::cout << GRN "a ShrubberyCreationForm ";
-	std::cout << URED "has been shredded";
-	std::cout << DEF << std::endl;
+	std::cout << URED "has been shredded" DEF << std::endl;
 }
 
 ShrubberyCreationForm &ShrubberyCreationForm::operator=(ShrubberyCreationForm const &source)

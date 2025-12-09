@@ -6,7 +6,7 @@
 /*   By: rduro-pe <rduro-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 11:37:14 by rduro-pe          #+#    #+#             */
-/*   Updated: 2025/12/08 15:45:37 by rduro-pe         ###   ########.fr       */
+/*   Updated: 2025/12/09 10:58:03 by rduro-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ Intern::~Intern(void)
 Intern &Intern::operator=(Intern const &source)
 {
 	if (this != &source)
-		;
+		(void)source;
 	return (*this);
 }
 

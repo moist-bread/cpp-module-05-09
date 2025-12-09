@@ -16,8 +16,7 @@ PresidentialPardonForm::PresidentialPardonForm(void) : AForm("PresidentialPardon
 {
 	_target = "default";
 	std::cout << GRN "a PresidentialPardonForm ";
-	std::cout << UCYN "has been printed...";
-	std::cout << DEF << std::endl;
+	std::cout << UCYN "has been printed..." DEF << std::endl;
 	std::cout << *this;
 }
 
@@ -25,8 +24,7 @@ PresidentialPardonForm::PresidentialPardonForm(const std::string &target) : AFor
 {
 	_target = target;
 	std::cout << GRN "a PresidentialPardonForm ";
-	std::cout << UCYN "has been printed...";
-	std::cout << DEF << std::endl;
+	std::cout << UCYN "has been printed..." DEF << std::endl;
 	std::cout << *this;
 }
 
@@ -34,16 +32,14 @@ PresidentialPardonForm::PresidentialPardonForm(PresidentialPardonForm const &sou
 {
 	*this = source;
 	std::cout << GRN "a PresidentialPardonForm ";
-	std::cout << UYEL "has been scanned and copied";
-	std::cout << DEF << std::endl;
+	std::cout << UYEL "has been scanned and copied" DEF << std::endl;
 	std::cout << *this;
 }
 
 PresidentialPardonForm::~PresidentialPardonForm(void)
 {
 	std::cout << GRN "a PresidentialPardonForm ";
-	std::cout << URED "has been shredded";
-	std::cout << DEF << std::endl;
+	std::cout << URED "has been shredded" DEF << std::endl;
 }
 
 PresidentialPardonForm &PresidentialPardonForm::operator=(PresidentialPardonForm const &source)

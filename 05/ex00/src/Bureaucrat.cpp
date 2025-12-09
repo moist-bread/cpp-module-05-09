@@ -14,12 +14,9 @@
 
 Bureaucrat::Bureaucrat(void) : _name("Nameless"), _grade(150)
 {
-	std::cout << GRN "the Bureaucrat [ ";
-	std::cout << getName() << " ] ";
-	std::cout << "and grade [ ";
-	std::cout << getGrade() << " ] ";
-	std::cout << UCYN "has been born";
-	std::cout << DEF << std::endl;
+	std::cout << GRN "the Bureaucrat [ " << getName() << " ] ";
+	std::cout << "and grade [ " << getGrade() << " ] ";
+	std::cout << UCYN "has been born" DEF << std::endl;
 }
 
 Bureaucrat::Bureaucrat(const std::string &name, int grade) : _name(name), _grade(grade)
@@ -28,39 +25,29 @@ Bureaucrat::Bureaucrat(const std::string &name, int grade) : _name(name), _grade
 		throw(GradeTooHighException());
 	if (_grade > 150)
 		throw(GradeTooLowException());
-	std::cout << GRN "the Bureaucrat [ ";
-	std::cout << getName() << " ] ";
-	std::cout << "and grade [ ";
-	std::cout << getGrade() << " ] ";
-	std::cout << UCYN "has been born";
-	std::cout << DEF << std::endl;
+	std::cout << GRN "the Bureaucrat [ " << getName() << " ] ";
+	std::cout << "and grade [ " << getGrade() << " ] ";
+	std::cout << UCYN "has been born" DEF << std::endl;
 }
 
 Bureaucrat::Bureaucrat(Bureaucrat const &source)
 {
 	*this = source;
-	std::cout << GRN "the Bureaucrat [ ";
-	std::cout << getName() << " ] ";
-	std::cout << "and grade [ ";
-	std::cout << getGrade() << " ] ";
-	std::cout << UYEL "has been copy cloned";
-	std::cout << DEF << std::endl;
+	std::cout << GRN "the Bureaucrat [ " << getName() << " ] ";
+	std::cout << "and grade [ " << getGrade() << " ] ";
+	std::cout << UYEL "has been copy cloned" DEF << std::endl;
 }
 
 Bureaucrat::~Bureaucrat(void)
 {
-	std::cout << GRN "the Bureaucrat [ ";
-	std::cout << getName() << " ] ";
-	std::cout << "and grade [ ";
-	std::cout << getGrade() << " ] ";
-	std::cout << URED "has died";
-	std::cout << DEF << std::endl;
+	std::cout << GRN "the Bureaucrat [ " << getName() << " ] ";
+	std::cout << "and grade [ " << getGrade() << " ] ";
+	std::cout << URED "has died" DEF << std::endl;
 }
 
 Bureaucrat &Bureaucrat::operator=(Bureaucrat const &source)
 {
-	std::cout << YEL "copy assignment operator overload has been called";
-	std::cout << DEF << std::endl;
+	std::cout << YEL "copy assignment operator overload..." DEF << std::endl;
 	if (this != &source)
 		_grade = source.getGrade();
 	return (*this);
