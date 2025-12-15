@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Bureaucrat.cpp                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: rduro-pe <rduro-pe@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/14 11:37:14 by rduro-pe          #+#    #+#             */
-/*   Updated: 2025/11/17 14:23:36 by rduro-pe         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../inc/Bureaucrat.hpp"
 
 Bureaucrat::Bureaucrat(void) : _name("Nameless"), _grade(150)
@@ -66,17 +54,17 @@ int Bureaucrat::getGrade(void) const
 void Bureaucrat::increment_grade(void)
 {
 	std::cout << "increment: ";
-	_grade--;
-	if (_grade < 1)
+	if (_grade <= 1)
 		throw(GradeTooHighException());
+	_grade--;
 }
 
 void Bureaucrat::decrement_grade(void)
 {
 	std::cout << "decrement: ";
-	_grade++;
-	if (_grade > 150)
+	if (_grade >= 150)
 		throw(GradeTooLowException());
+	_grade++;
 }
 
 void Bureaucrat::signForm(Form &form)
@@ -87,11 +75,12 @@ void Bureaucrat::signForm(Form &form)
 		std::cout << *this << GRN " signed the following Form:" DEF << std::endl;
 		std::cout << form << std::endl;
 	}
-	catch(std::exception &e)
+	catch (std::exception &e)
 	{
 		std::cout << *this << RED " couldn't sign the following Form:" DEF << std::endl;
 		std::cout << form;
-		std::cout << RED "motive: " DEF << e.what() << std::endl << std::endl;
+		std::cout << RED "motive: " DEF << e.what() << std::endl
+				  << std::endl;
 	}
 }
 
@@ -108,6 +97,6 @@ const char *Bureaucrat::GradeTooLowException::what(void) const throw()
 std::ostream &operator<<(std::ostream &out, Bureaucrat const &source)
 {
 	out << BLU << source.getName() << DEF ", bureaucrat grade ";
-	out << BLU <<  source.getGrade() << DEF;
+	out << BLU << source.getGrade() << DEF;
 	return (out);
 }

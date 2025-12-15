@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: rduro-pe <rduro-pe@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/10 13:01:53 by rduro-pe          #+#    #+#             */
-/*   Updated: 2025/12/08 12:42:49 by rduro-pe         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include <cstdlib>
 #include "../inc/ShrubberyCreationForm.hpp"
 #include "../inc/RobotomyRequestForm.hpp"
@@ -30,17 +18,17 @@ int main(int ac, char **av)
 		std::cout << "[signer bureaucrat grade] [executer bureaucrat grade]" << std::endl;
 		return (2);
 	}
-	
+
 	std::string form_type = av[1];
 	std::string target = av[2];
 	int sign_grade = std::atoi(av[3]);
 	int exe_grade = std::atoi(av[4]);
-	
+
 	AForm *form = try_catch_multi_form(form_type, target);
 	if (!form)
 		return (1);
 	std::cout << std::endl;
-	
+
 	Bureaucrat *a = try_catch_bureaucrat("guy that signs", sign_grade);
 	if (a)
 	{
@@ -49,7 +37,7 @@ int main(int ac, char **av)
 		delete a;
 		std::cout << std::endl << std::endl;
 	}
-	
+
 	Bureaucrat *b = try_catch_bureaucrat("guy that executes", exe_grade);
 	if (b)
 	{
@@ -59,7 +47,7 @@ int main(int ac, char **av)
 		delete b;
 		std::cout << std::endl << std::endl;
 	}
-	
+
 	delete form;
 	return (0);
 }
@@ -67,7 +55,8 @@ int main(int ac, char **av)
 Bureaucrat *try_catch_bureaucrat(const std::string &name, int grade)
 {
 	std::cout << UBLU "try-catch w/ Bureaucrat name [" << name << "] and grade [" << grade << "]";
-	std::cout << DEF << std::endl << std::endl;
+	std::cout << DEF << std::endl
+			  << std::endl;
 	try
 	{
 		Bureaucrat *bureaucrat = new Bureaucrat(name, grade);
@@ -84,11 +73,12 @@ Bureaucrat *try_catch_bureaucrat(const std::string &name, int grade)
 AForm *try_catch_multi_form(const std::string &form_type, const std::string &target)
 {
 	std::cout << UBLU "try-catch multi form of type [" << form_type << "], target [" << target << "]";
-	std::cout << DEF << std::endl << std::endl;
+	std::cout << DEF << std::endl
+			  << std::endl;
 	try
 	{
 		std::string types[3] = {"tree", "robot", "president"};
-		
+
 		int i = -1;
 		while (++i < 3)
 			if (form_type == types[i])
