@@ -6,7 +6,7 @@
 /*   By: rduro-pe <rduro-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 14:22:35 by rduro-pe          #+#    #+#             */
-/*   Updated: 2025/12/15 09:13:14 by rduro-pe         ###   ########.fr       */
+/*   Updated: 2025/12/15 15:23:13 by rduro-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,4 @@ class Base
 {
 public:
 	virtual ~Base(void);	// destructor
-
-private:
-	Base(void);	// default constructor
-	Base(Base const &source);	// copy constructor
-	Base &operator=(Base const &source);	// copy assignment operator overload
 };

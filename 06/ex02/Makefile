@@ -6,7 +6,7 @@
 #    By: rduro-pe <rduro-pe@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/29 12:30:07 by rduro-pe          #+#    #+#              #
-#    Updated: 2025/12/11 18:58:19 by rduro-pe         ###   ########.fr        #
+#    Updated: 2025/12/15 16:54:19 by rduro-pe         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ SRC_DIR	=	src
 OBJ_DIR	=	obj
 
 # -->┊( SOURCE AND OBJS )┊.´-★☆★
-SOURCE	=	main.cpp Base.cpp
+SOURCE	=	main.cpp Base.cpp funcs.cpp
 
 SRC		=	$(addprefix $(SRC_DIR)/, $(SOURCE))
 OBJS	=	$(addprefix $(OBJ_DIR)/, $(SOURCE:.cpp=.o))
@@ -46,14 +46,14 @@ $(OBJ_DIR):
 
 # -->┊( EXECUTION RULES )┊.´-★☆★
 exe: all
-	./$(NAME) 4
+	./$(NAME)
 
 rexe: re
 	@echo "\n"
-	./$(NAME) 148
+	./$(NAME)
 
 val: all
-	$(VAL) ./$(NAME) 151
+	$(VAL) ./$(NAME)
 
 # -->┊( STANDARD RULES )┊.´-★☆★
 clean:
