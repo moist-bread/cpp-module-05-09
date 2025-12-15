@@ -1,5 +1,5 @@
 # -->┊( NAMES )┊.´-★☆★
-NAME	=	identify
+NAME	=	whatever
 
 # -->┊( COMMANDS AND FLAGS )┊.´-★☆★
 CXX	=	c++
@@ -11,7 +11,7 @@ SRC_DIR	=	src
 OBJ_DIR	=	obj
 
 # -->┊( SOURCE AND OBJS )┊.´-★☆★
-SOURCE	=	main.cpp Base.cpp funcs.cpp
+SOURCE	=	main.cpp
 
 SRC		=	$(addprefix $(SRC_DIR)/, $(SOURCE))
 OBJS	=	$(addprefix $(OBJ_DIR)/, $(SOURCE:.cpp=.o))
