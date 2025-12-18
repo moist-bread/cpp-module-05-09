@@ -2,6 +2,8 @@
 
 //-‵,┊ needed libs by class
 #include <iostream>
+#include <typeinfo>
+#include <stdexcept>
 
 // -->┊( ARRAY )┊.´-★☆★
 
@@ -14,11 +16,11 @@ public:
 	Array (Array const &source); // copy constructor
 	~Array (void); // destructor
 	Array &operator=(Array const &source); // copy assignment operator overload
-	T &operator[](int idx); // subscript operator
+	T &operator[](unsigned int idx); // subscript operator
 
 	unsigned int size (void) const;
 
 private:
-	T _array;
+	T *_array;
 	unsigned int _size;
 };
