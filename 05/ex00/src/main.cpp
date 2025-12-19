@@ -30,11 +30,11 @@ int main(int ac, char **av)
 	if (b)
 	{
 		std::cout << *b << std::endl;
-		try_catch_func(a, &Bureaucrat::increment_grade);
-		try_catch_func(a, &Bureaucrat::increment_grade);
-		try_catch_func(a, &Bureaucrat::increment_grade);
-		try_catch_func(a, &Bureaucrat::increment_grade);
-		try_catch_func(a, &Bureaucrat::increment_grade);
+		try_catch_func(b, &Bureaucrat::increment_grade);
+		try_catch_func(b, &Bureaucrat::increment_grade);
+		try_catch_func(b, &Bureaucrat::increment_grade);
+		try_catch_func(b, &Bureaucrat::increment_grade);
+		try_catch_func(b, &Bureaucrat::increment_grade);
 		std::cout << *b << std::endl;
 		delete b;
 		std::cout << std::endl << std::endl;

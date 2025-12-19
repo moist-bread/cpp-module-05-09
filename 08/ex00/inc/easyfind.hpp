@@ -25,4 +25,7 @@
 // -->┊( easyfind )┊.´-★☆★
 
 template <typename T>
-// void 
+int easyfind(T container, int to_find)
+{
+	return (-1);
+}
