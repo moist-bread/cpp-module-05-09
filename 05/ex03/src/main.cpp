@@ -70,9 +70,3 @@ Bureaucrat *try_catch_bureaucrat(const std::string &name, int grade)
 	}
 	return (NULL);
 }
-
-// ./28b tree David 50 60
-// ./28b tree David 50 600
-// ./28b tree David 50 150
-// ./28b robot Manu 1 1
-// ./28b president Sergio 1 1
