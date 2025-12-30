@@ -1,5 +1,5 @@
 #include "../inc/easyfind.hpp"
-#include <stdlib.h>
+
 #include <time.h>
 #include <vector>
 #include <list>
@@ -12,8 +12,8 @@ int main()
 	std::cout << std::endl << std::endl;
 
 	srand(time(NULL));
-	// std::vector<int> container;
-	std::list<int> container;
+	std::vector<int> container;
+	// std::list<int> container;
 	// std::deque<int> container;
 
 	// -- creation
@@ -26,11 +26,11 @@ int main()
 	try
 	{
 		int pos = easyfind(container, to_find);
-		std::cout << GRN "found " << to_find << " at " << pos;
+		std::cout << GRN "found " << pos << " in the container";
 	}
 	catch (std::exception &e)
 	{
-		std::cerr << RED "couldn't find " << to_find << " in the container";
+		std::cerr << RED << e.what() << to_find;
 	}
 	std::cout << DEF << std::endl;
 	return (0);

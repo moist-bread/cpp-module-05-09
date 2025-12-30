@@ -98,7 +98,6 @@ static t_type parse_type(std::string input)
 			return (INVALID);
 		return (DOUBLE);
 	}
-	return (INVALID);
 }
 
 static void inv_output(void)
