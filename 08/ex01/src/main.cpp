@@ -1,30 +1,49 @@
 #include "../inc/Span.hpp"
 
 #include <time.h>
-#include <vector>
-#include <list>
-#include <deque>
 
-int main()
+int main(int ac, char **av)
 {
 	std::cout << std::endl;
 	std::cout << CYN ">>┈┈┈>   SPAN 🔎🏴‍☠️" DEF;
 	std::cout << std::endl << std::endl;
-
-	Span sp = Span(50);
-	sp.addNumber(6);
-	sp.addNumber(3);
-	sp.addNumber(17);
-	sp.addNumber(9);
-	sp.addNumber(11);
-	std::cout << sp << std::endl;
-	sp.addRange(sp.get_span());
-	std::cout << sp << std::endl;
-	std::cout << std::endl;
-	std::cout << sp.shortestSpan() << std::endl;
-	std::cout << std::endl;
-	std::cout << sp.longestSpan() << std::endl;
-	std::cout << std::endl;
+	if (ac != 3 && ac != 1)
+		return (std::cerr << "usage: ./span [limit] [add amount]" << std::endl, 2);
+	
+	int limit;
+	int add;
+	if (ac == 3)
+	{
+		limit = std::atoi(av[1]);
+		add = std::atoi(av[2]);
+	}
+	else
+	{
+		limit = 10;
+		add = 4;
+	}
+	srand(time(NULL));
+	
+	try
+	{
+		Span sp = Span(limit);
+		for (int i = 0; i < add; i++)
+			sp.addNumber(rand() % 100);
+		std::cout << "\n-- created vector\n";
+		std::cout << std::endl << sp << std::endl;
+		std::cout << CYN "shortest span: " DEF << sp.shortestSpan() << std::endl;
+		std::cout << CYN "longest span: " DEF << sp.longestSpan() << std::endl;
+		sp.addNumber(rand() % 100);
+		std::cout << "\n-- added an extra elem\n";
+		std::cout << std::endl << sp << std::endl;
+		sp.addRange(sp.get_span());
+		std::cout << "\n-- added a range\n";
+		std::cout << std::endl << sp << std::endl;
+	}
+	catch (std::exception &e)
+	{
+		std::cerr << RED << e.what() << DEF << std::endl;
+	}
 
 	return (0);
 }

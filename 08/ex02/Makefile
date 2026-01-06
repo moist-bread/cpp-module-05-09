@@ -1,5 +1,5 @@
 # -->┊( NAMES )┊.´-★☆★
-NAME	=	span
+NAME	=	abomination
 
 # -->┊( COMMANDS AND FLAGS )┊.´-★☆★
 CXX	=	c++
@@ -11,7 +11,7 @@ SRC_DIR	=	src
 OBJ_DIR	=	obj
 
 # -->┊( SOURCE AND OBJS )┊.´-★☆★
-SOURCE	=	main.cpp Span.cpp
+SOURCE	=	main.cpp
 
 SRC		=	$(addprefix $(SRC_DIR)/, $(SOURCE))
 OBJS	=	$(addprefix $(OBJ_DIR)/, $(SOURCE:.cpp=.o))
@@ -38,10 +38,10 @@ exe: all
 
 rexe: re
 	@echo "\n"
-	./$(NAME) 10 0
+	./$(NAME)
 
 val: all
-	$(VAL) ./$(NAME) 10 5
+	$(VAL) ./$(NAME)
 
 # -->┊( STANDARD RULES )┊.´-★☆★
 clean:

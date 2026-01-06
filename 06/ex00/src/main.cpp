@@ -6,7 +6,6 @@ int main(int ac, char **av)
 	std::cout << CYN ">>┈┈┈>   CONVERSION OF SCALAR TYPES 🔜🔎";
 	std::cout << DEF << std::endl << std::endl;
 
-	(void)av;
 	if (ac != 2)
 		return (std::cout << "usage: ./scalar [input]" << std::endl, 2);
 	ScalarConverter::convert(av[1]);

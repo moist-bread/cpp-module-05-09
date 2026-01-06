@@ -2,12 +2,10 @@
 
 //-‵,┊ needed libs by class
 #include <iostream>
-#include <typeinfo>
 #include <stdexcept>
 #include <algorithm>
 #include <vector>
 #include <limits>
-#include <functional>
 
 //-‵,┊ color defines
 
@@ -39,7 +37,6 @@ public:
 	~Span(void);				// destructor
 	
 	Span &operator=(Span const &source);	// copy assignment
-	void operator() (int i);
 
 	void addNumber(int nbr);
 	void addRange(int_vec_t myvector);

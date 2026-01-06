@@ -36,12 +36,6 @@ Span &Span::operator=(Span const &source)
 	return (*this);
 }
 
-void Span::operator() (int i)
-{
-	std::cout << "what" << std::endl;
-	addNumber(i);
-}
-
 void Span::addNumber(int nbr)
 {
 	if (_span.size() == N)
@@ -51,11 +45,9 @@ void Span::addNumber(int nbr)
 
 void Span::addRange(int_vec_t range)
 {
-	if (_span.size() == N)
+	if (_span.size() + range.size() > N)
 		throw (std::out_of_range("couldn't add due to range limit"));
-	
-	// -- ACTUALLY ADD THE RANGE
-	std::for_each(range.begin(), range.end(), *this);
+	_span.insert(_span.end(), range.begin(), range.end());
 }
 
 int Span::shortestSpan(void) const
@@ -94,9 +86,11 @@ std::ostream &operator<<(std::ostream &out, Span const &source)
 {
 	int idx = 1;
 
+	if (source.get_span().empty())
+		out << BLU "no elements in vector" DEF << std::endl;
+
 	int_vec_t span = source.get_span();
 	for (int_vec_t::iterator i = span.begin(); i != span.end(); i++)
 		out << BLU "elem " << idx++ << ": " DEF << *i << std::endl;
-	out << std::endl;
 	return (out);
 }
