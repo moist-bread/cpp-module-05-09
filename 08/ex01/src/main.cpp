@@ -11,15 +11,20 @@ int main()
 	std::cout << CYN ">>┈┈┈>   SPAN 🔎🏴‍☠️" DEF;
 	std::cout << std::endl << std::endl;
 
-	Span sp = Span(5);
+	Span sp = Span(50);
 	sp.addNumber(6);
 	sp.addNumber(3);
 	sp.addNumber(17);
 	sp.addNumber(9);
 	sp.addNumber(11);
 	std::cout << sp << std::endl;
+	sp.addRange(sp.get_span());
+	std::cout << sp << std::endl;
+	std::cout << std::endl;
 	std::cout << sp.shortestSpan() << std::endl;
+	std::cout << std::endl;
 	std::cout << sp.longestSpan() << std::endl;
+	std::cout << std::endl;
 
 	return (0);
 }

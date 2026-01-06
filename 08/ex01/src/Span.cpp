@@ -31,8 +31,15 @@ Span &Span::operator=(Span const &source)
 	if (this != &source)
 	{
 		N = source.N;
+		_span = source.get_span();
 	}
 	return (*this);
+}
+
+void Span::operator() (int i)
+{
+	std::cout << "what" << std::endl;
+	addNumber(i);
 }
 
 void Span::addNumber(int nbr)
@@ -42,21 +49,40 @@ void Span::addNumber(int nbr)
 	_span.push_back(nbr);
 }
 
-void Span::addRange(int nbrs)
+void Span::addRange(int_vec_t range)
 {
 	if (_span.size() == N)
 		throw (std::out_of_range("couldn't add due to range limit"));
-	_span.push_back(nbrs);
+	
+	// -- ACTUALLY ADD THE RANGE
+	std::for_each(range.begin(), range.end(), *this);
 }
 
 int Span::shortestSpan(void) const
 {
-	return (1);
+	if (_span.size() < 2)
+		throw (std::out_of_range("no span can be found with such few elements"));
+	
+	int_vec_t sorted_span = get_span();
+	sort(sorted_span.begin(), sorted_span.end());
+	int_vec_t::iterator end = sorted_span.end() - 1;
+	int shortest = std::numeric_limits<int>::max();
+	for (int_vec_t::iterator i = sorted_span.begin(); i != end; i++)
+	{
+		int dif = *(i + 1) - *i;
+		if (dif < shortest)
+			shortest = dif;
+	}
+	return (shortest);
 }
 
 int Span::longestSpan(void) const
 {
-	return (1);
+	if (_span.size() < 2)
+		throw (std::out_of_range("no span can be found with such few elements"));
+	int_vec_t sorted_span = get_span();
+	sort(sorted_span.begin(), sorted_span.end());
+	return (*(sorted_span.end() - 1) - *sorted_span.begin());
 }
 
 int_vec_t Span::get_span(void) const
