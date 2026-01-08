@@ -14,21 +14,21 @@ int main()
 	std::cout << DEF << std::endl << std::endl;
 
 
-    std::cout << BLU "creating the Arrays to test on"  DEF << std::endl;
+    std::cout << "\n-- creating the Arrays to test on\n";
 	Array<int> numbers(MAX_VAL);
+	std::cout << std::endl;
 
     int* mirror = new int[MAX_VAL];
     srand(time(NULL));
     for (int i = 0; i < MAX_VAL; i++)
     {
-        const int value = rand();
+        const int value = rand() % 100;
         numbers[i] = value;
         mirror[i] = value;
     }
-	std::cout << std::endl << std::endl;
     
     // DIFFERENT SCOPE
-    std::cout << BLU "testing copy assign and copy constructor" DEF << std::endl;
+    std::cout << "\n-- testing copy assign and copy constructor\n";
     {
         Array<int> tmp = numbers;
         Array<int> test(tmp);
@@ -38,9 +38,9 @@ int main()
             std::cout << test[i] << std::endl;
         }
     }
-	std::cout << std::endl << std::endl;
+	std::cout << std::endl;
 
-    std::cout << BLU "checking if they're the same" DEF << std::endl;
+    std::cout << "\n-- checking if they're the same\n";
     for (int i = 0; i < MAX_VAL; i++)
     {
         std::cout << numbers[i] << " ";
@@ -51,13 +51,13 @@ int main()
             return 1;
         }
     }
-	std::cout << std::endl << std::endl;
+	std::cout << std::endl;
 
-    std::cout << BLU "testing the subscript [] operator" DEF << std::endl;
+    std::cout << "\n-- testing the subscript [] operator\n";
     try
     {
         numbers[-2] = 0;
-        std::cout << GRN << "SUCCESS: " <<  numbers[-2] << DEF << std::endl;
+        std::cout << GRN << "success: " <<  numbers[-2] << DEF << std::endl;
     }
     catch(const std::exception& e)
     {
@@ -66,7 +66,7 @@ int main()
     try
     {
         numbers[MAX_VAL] = 0;
-        std::cout << GRN << "SUCCESS: " <<  numbers[MAX_VAL] << DEF << std::endl;
+        std::cout << GRN << "success: " <<  numbers[MAX_VAL] << DEF << std::endl;
     }
     catch(const std::exception& e)
     {
@@ -75,7 +75,7 @@ int main()
     try
     {
         numbers[0] = 0;
-        std::cout << GRN << "SUCCESS: " <<  numbers[0] << DEF << std::endl;
+        std::cout << GRN << "success: " <<  numbers[0] << DEF << std::endl;
     }
     catch(const std::exception& e)
     {

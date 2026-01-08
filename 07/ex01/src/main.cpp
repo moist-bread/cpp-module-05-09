@@ -1,5 +1,4 @@
 #include "../inc/iter.hpp"
-#include <stdio.h>
 #include <string.h>
 
 int main(int ac, char **av)
@@ -18,13 +17,18 @@ int main(int ac, char **av)
 	::iter(int_array, 5, &::printer);
 	std::cout << std::endl << std::endl;
 
+	std::cout << BLU "testing iter print with a const int array" DEF << std::endl;
+	
+	const int const_int_array[5] = {6,7,8,9,10};
+	::iter(const_int_array, 5, &::printer);
+	std::cout << std::endl << std::endl;
+
 	if (ac == 1)
 		return (0);
-	
 	std::cout << BLU "testing iter print/inc with a char array" DEF << std::endl;
 	
 	char *char_array = av[1];
-	int len = strlen(av[1]);
+	unsigned int len = strlen(av[1]);
 
 	::iter(char_array, len, &::printer);
 	std::cout << std::endl;

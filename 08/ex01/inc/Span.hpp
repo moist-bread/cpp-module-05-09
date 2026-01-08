@@ -24,7 +24,7 @@
 
 #define DEF "\e[0m"
 
-typedef std::vector<int>	int_vec_t;
+typedef std::vector<int>	int_vec;
 
 // -->┊( SPAN )┊.´-★☆★
 
@@ -39,14 +39,14 @@ public:
 	Span &operator=(Span const &source);	// copy assignment
 
 	void addNumber(int nbr);
-	void addRange(int_vec_t myvector);
+	void addRange(int_vec myvector);
 	int shortestSpan(void) const;
 	int longestSpan(void) const;
 	
-	int_vec_t get_span(void) const;
+	int_vec get_span(void) const;
 	
 private:
-	int_vec_t _span;
+	int_vec _span;
 	unsigned int N;
 };
 

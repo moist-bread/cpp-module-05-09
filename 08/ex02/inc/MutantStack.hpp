@@ -2,56 +2,48 @@
 
 //-‵,┊ needed libs by class
 #include <iostream>
-#include <stdexcept>
-#include <algorithm>
-#include <vector>
-#include <limits>
 #include <stack>
-#include <cstddef>
 
 //-‵,┊ color defines
 
-#define RED "\e[0;31m"
 #define GRN "\e[0;32m"
 #define YEL "\e[0;33m"
 #define BLU "\e[0;34m"
-#define MAG "\e[0;35m"
 #define CYN "\e[0;36m"
 
 #define URED "\e[4;31m"
 #define UYEL "\e[4;33m"
-#define UBLU "\e[4;34m"
-#define UMAG "\e[4;35m"
 #define UCYN "\e[4;36m"
 
 #define DEF "\e[0m"
 
-
 // -->┊( MUTANT STACK )┊.´-★☆★
 
-template <typename T>
-class MutantStack
+template <typename T, class Container = std::deque<T> >
+class MutantStack : public std::stack<T>
 {
 public:
-	MutantStack(void);					// default constructor
-	MutantStack(MutantStack const &source);	// copy constructor
-	~MutantStack(void);				// destructor
-	
-	MutantStack &operator=(MutantStack const &source);	// copy assignment
+	typedef typename MutantStack<T, Container>::container_type::iterator iterator;
+	typedef typename MutantStack<T, Container>::container_type::const_iterator const_iterator;
+	typedef typename MutantStack<T, Container>::container_type::reverse_iterator reverse_iterator;
+	typedef typename MutantStack<T, Container>::container_type::const_reverse_iterator const_reverse_iterator;
 
-	bool empty(void) const;
-	unsigned int size(void) const;
-	T &top(void) const;
-	void push(const T &val);
-	void emplace(const T &val);
-	void pop(void);
-	void swap(std::stack<T> &source);
-	
-	std::stack<T> get_stack(void) const;
+	MutantStack(void);									  // default constructor
+	MutantStack(MutantStack<T, Container> const &source); // copy constructor
+	~MutantStack(void);									  // destructor
 
-private:
-	std::stack<T> _stack;
+	MutantStack<T, Container> &operator=(MutantStack<T, Container> const &source); // copy assignment
+
+	iterator begin(void) { return (this->c.begin()); };
+	iterator end(void) { return (this->c.end()); };
+	const_iterator cbegin(void) const { return (this->c.begin()); };
+	const_iterator cend(void) const { return (this->c.end()); };
+	reverse_iterator rbegin(void) { return (this->c.rbegin()); };
+	reverse_iterator rend(void) { return (this->c.rend()); };
+	const_reverse_iterator crbegin(void) const { return (this->c.rbegin()); };
+	const_reverse_iterator crend(void) const { return (this->c.rend()); };
+
 };
 
-template <typename T>
-std::ostream &operator<<(std::ostream &out, MutantStack<T> const &source);
+template <typename T, class Container>
+std::ostream &operator<<(std::ostream &out, MutantStack<T, Container> &source);

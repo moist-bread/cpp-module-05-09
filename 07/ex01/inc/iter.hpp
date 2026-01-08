@@ -12,18 +12,20 @@
 // -->┊( ITER )┊.´-★☆★
 
 template <typename T>
-void iter(T *array, const int len, void (*func)(T &elem))
+void iter(T *array, const unsigned int len, void (*func)(T &elem))
 {
-	for (int i = 0; i < len; i++)
+	for (unsigned int i = 0; i < len; i++)
 		func(array[i]);
 }
 
+// tester function that prints
 template <typename T>
 void printer(T &value)
 {
 	std::cout << "[ " << value <<" ]";
 }
 
+// tester function that increments
 template <typename T>
 void inc(T &value)
 {

@@ -38,10 +38,10 @@ exe: all
 
 rexe: re
 	@echo "\n"
-	./$(NAME)
+	./$(NAME) 10 0
 
 val: all
-	$(VAL) ./$(NAME)
+	$(VAL) ./$(NAME) 10 5
 
 # -->┊( STANDARD RULES )┊.´-★☆★
 clean:

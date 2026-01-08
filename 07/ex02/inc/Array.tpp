@@ -9,13 +9,10 @@
 #define GRN "\e[0;32m"
 #define YEL "\e[0;33m"
 #define BLU "\e[0;34m"
-#define MAG "\e[0;35m"
 #define CYN "\e[0;36m"
 
 #define URED "\e[4;31m"
 #define UYEL "\e[4;33m"
-#define UBLU "\e[4;34m"
-#define UMAG "\e[4;35m"
 #define UCYN "\e[4;36m"
 
 #define DEF "\e[0m"
@@ -23,7 +20,7 @@
 // -->┊( ARRAY TEMPLATE METHODS )┊.´-★☆★
 
 template <typename T>
-Array<T>::Array (void): _array(NULL), _size(0)
+Array<T>::Array (void): _array(new T[0]), _size(0)
 {
 	std::cout << GRN "an empty array of type [ " << typeid(T).name() << " ] ";
 	std::cout << UCYN "has been created" DEF << std::endl;
@@ -74,7 +71,7 @@ Array<T> &Array<T>::operator=(Array const &source)
 template <typename T>
 T &Array<T>::operator[](unsigned int idx)
 {
-	if (idx < 0 || idx >= _size)
+	if (idx >= _size)
 		throw(std::out_of_range("out of range detected..."));
 	return (_array[idx]);
 }

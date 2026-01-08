@@ -10,17 +10,12 @@ int main(int ac, char **av)
 	if (ac != 3 && ac != 1)
 		return (std::cerr << "usage: ./span [limit] [add amount]" << std::endl, 2);
 	
-	int limit;
-	int add;
+	int limit = 10;
+	int add = 4;
 	if (ac == 3)
 	{
 		limit = std::atoi(av[1]);
 		add = std::atoi(av[2]);
-	}
-	else
-	{
-		limit = 10;
-		add = 4;
 	}
 	srand(time(NULL));
 	
