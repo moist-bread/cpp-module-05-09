@@ -16,7 +16,6 @@ int main()
 
     std::cout << "\n-- creating the Arrays to test on\n";
 	Array<int> numbers(MAX_VAL);
-	std::cout << std::endl;
 
     int* mirror = new int[MAX_VAL];
     srand(time(NULL));
@@ -28,7 +27,7 @@ int main()
     }
     
     // DIFFERENT SCOPE
-    std::cout << "\n-- testing copy assign and copy constructor\n";
+    std::cout << "\n\n-- testing copy assign and copy constructor\n";
     {
         Array<int> tmp = numbers;
         Array<int> test(tmp);
@@ -38,9 +37,8 @@ int main()
             std::cout << test[i] << std::endl;
         }
     }
-	std::cout << std::endl;
 
-    std::cout << "\n-- checking if they're the same\n";
+    std::cout << "\n\n-- checking if they're the same\n";
     for (int i = 0; i < MAX_VAL; i++)
     {
         std::cout << numbers[i] << " ";
@@ -51,37 +49,22 @@ int main()
             return 1;
         }
     }
-	std::cout << std::endl;
 
-    std::cout << "\n-- testing the subscript [] operator\n";
-    try
+    std::cout << "\n\n-- testing the subscript [] operator\n";
+    int array[] = {-2, MAX_VAL, 0};
+    for (int i = 0; i < 3; i++)
     {
-        numbers[-2] = 0;
-        std::cout << GRN << "success: " <<  numbers[-2] << DEF << std::endl;
+        try
+        {
+            numbers[array[i]] = 0;
+            std::cout << GRN << "success: " <<  numbers[array[i]] << DEF << std::endl;
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << RED << e.what() << DEF << std::endl;
+        }
     }
-    catch(const std::exception& e)
-    {
-        std::cerr << RED << e.what() << DEF << std::endl;
-    }
-    try
-    {
-        numbers[MAX_VAL] = 0;
-        std::cout << GRN << "success: " <<  numbers[MAX_VAL] << DEF << std::endl;
-    }
-    catch(const std::exception& e)
-    {
-        std::cerr << RED << e.what() << DEF << std::endl;
-    }
-    try
-    {
-        numbers[0] = 0;
-        std::cout << GRN << "success: " <<  numbers[0] << DEF << std::endl;
-    }
-    catch(const std::exception& e)
-    {
-        std::cerr << RED << e.what() << DEF << std::endl;
-    }
-	std::cout << std::endl << std::endl;
+   	std::cout << std::endl << std::endl;
 
     delete [] mirror;
 

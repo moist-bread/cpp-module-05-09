@@ -34,11 +34,11 @@ $(OBJ_DIR):
 
 # -->┊( EXECUTION RULES )┊.´-★☆★
 exe: all
-	./$(NAME) abc
+	./$(NAME)
 
 rexe: re
 	@echo "\n"
-	./$(NAME) "things are getting strange"
+	./$(NAME)
 
 val: all
 	$(VAL) ./$(NAME)

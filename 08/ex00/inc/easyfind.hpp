@@ -2,8 +2,6 @@
 
 //-‵,┊ needed libs by class
 #include <iostream>
-#include <typeinfo>
-#include <stdexcept>
 #include <algorithm>
 
 //-‵,┊ color defines
