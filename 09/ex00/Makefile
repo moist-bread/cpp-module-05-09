@@ -47,14 +47,14 @@ re:	fclean all
 
 # -->┊( EXECUTION RULES )┊.´-★☆★
 exe: all
-	./$(NAME) k
+	./$(NAME) ./assets/input.txt
 
 rexe: re
 	@echo "\n"
-	./$(NAME) 14.86f
+	./$(NAME) ./assets/input.txt
 
 val: all
-	$(VAL) ./$(NAME) 7777777777777.0
+	$(VAL) ./$(NAME) ./assets/input.txt
 
 
 .PHONY: all clean fclean re exe rexe val
