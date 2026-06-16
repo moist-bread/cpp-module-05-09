@@ -10,10 +10,18 @@ T str_to_num(const std::string &str)
 	std::stringstream ss(str);	
 	T num;
 
-	ss >> base >> num;
+	ss >> num;
 	if (ss.fail() || !ss.eof())
 		throw (std::runtime_error("invalid number"));
 	return (num);
 }
+
+template <typename T>
+std::string var_to_str(const T &value)
+{
+	std::stringstream ss;
+	ss << value;
+	return ss.str();
+};
 
 #endif

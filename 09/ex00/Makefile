@@ -2,16 +2,17 @@
 NAME	=	btc
 
 # -->┊( COMMANDS AND FLAGS )┊.´-★☆★
-CXX	=	c++
-CXXFLAGS	=	-Wall -Wextra -Werror -g -std=c++98
-VAL		=	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes -s
+CXX			=	c++
+CXXFLAGS	=	-Wall -Wextra -Werror -g -std=c++98 -D DEBUG=$(DEBUG)
+VAL			=	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes -s
+DEBUG		=	0
 
 # -->┊( DIRECTORIES )┊.´-★☆★
 SRC_DIR	=	src
 OBJ_DIR	=	obj
 
 # -->┊( SOURCE AND OBJS )┊.´-★☆★
-SOURCE	=	main.cpp BitcoinExchange.cpp
+SOURCE	=	main.cpp BitcoinExchange.cpp Date.cpp
 
 SRC		=	$(addprefix $(SRC_DIR)/, $(SOURCE))
 OBJS	=	$(addprefix $(OBJ_DIR)/, $(SOURCE:.cpp=.o))
@@ -55,6 +56,10 @@ rexe: re
 
 val: all
 	$(VAL) ./$(NAME) ./assets/input.txt
+
+debug: fclean
+	make all DEBUG=1
+	./$(NAME) ./assets/input.txt
 
 
 .PHONY: all clean fclean re exe rexe val
