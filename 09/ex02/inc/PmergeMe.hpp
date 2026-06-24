@@ -13,6 +13,7 @@
 #include <ctime>
 #include <sys/time.h>
 
+
 //-‵,┊ color defines
 
 #define CYN "\e[0;36m"
@@ -33,6 +34,8 @@ public:
 	~PmergeMe(void);	// destructor
 	PmergeMe &operator=(PmergeMe const &source);	// copy assignment operator overload
 	
+	typedef std::vector<std::pair<int, int> > vector2;
+	
 private:
 	PmergeMe(void);	// default constructor
 	std::vector<int> _array_vec;
@@ -42,8 +45,14 @@ private:
 	
 	void print_array(std::string str) const;
 	void print_time(std::string container) const;
+
 	void sort_vec(void);
+	void merge_vec(vector2 &vec, vector2::iterator begin, vector2::iterator end);
+	void merge_swap_segment_vec(vector2 &vec, vector2::iterator begin, vector2::iterator end);
+	
+
 	void sort_deque(void);
+	
 	static time_t get_curr_time(void);
 };
 

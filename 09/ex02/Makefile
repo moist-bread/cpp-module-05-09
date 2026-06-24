@@ -48,7 +48,7 @@ re:	fclean all
 
 # -->┊( EXECUTION RULES )┊.´-★☆★
 exe: all
-	./$(NAME) 1 5 2 3
+	./$(NAME) 6 14 5 12 1 3 7 13 8 2 11 15 4 10 9 16
 
 rexe: re
 	@echo "\n"
@@ -59,7 +59,7 @@ val: all
 
 debug: fclean
 	make all DEBUG=1
-	./$(NAME) "8 9 * 9 - 9a - 9 - 4 - 1 +"
+	./$(NAME) "1 5 2 3"
 
 .PHONY: all clean fclean re exe rexe val debug
 

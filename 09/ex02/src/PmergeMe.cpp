@@ -59,9 +59,64 @@ void PmergeMe::print_time(std::string container) const
 
 void PmergeMe::sort_vec(void)
 {
-	_bench_start_time = get_curr_time();
 	std::cout << "sort_vec in process... " << std::endl;
+
+	_bench_start_time = get_curr_time();
+	vector2 pairs;
+	
+	for ( size_t i = 0; i + 2 < _array_vec.size(); i += 2)
+	{
+		if (_array_vec[i] > _array_vec[i + 1])
+			pairs.push_back(std::make_pair(_array_vec[i], _array_vec[i + 1]));
+		else
+			pairs.push_back(std::make_pair(_array_vec[i + 1], _array_vec[i]));
+	}
+
+	std::cout << "\npairs...\n\n";
+	for (vector2::const_iterator it = pairs.begin(); it != pairs.end(); it++)
+		std::cout << "(b)" << it->first << " \t\t(s)" << it->second << "\n";
+	std::cout << std::endl;
+
+
+	// !! Recursively sort the ⌊ n / 2 ⌋ larger elements from each pair
+	// -- instead of comparing every number only compare the pairs
+	// -- after that the pairs become pairs of pairs, so for 8 numbers you only need 1 comparison
+	merge_vec(pairs, pairs.begin(), pairs.end() - 1);
+
 	_bench_end_time = get_curr_time();
+}
+
+void PmergeMe::merge_vec(vector2 &vec, vector2::iterator begin, vector2::iterator end)
+{
+	if (end - begin <= 2 ) // less than 2 elems
+		return ;
+	
+	vector2::iterator pivot = begin + ((end - begin) / 2);
+	std::cout << "math: " << ((end - begin) / 2) << std::endl;
+	std::cout << "\npivot: ";
+	std::cout << "(b)" << pivot->first << " \t\t(s)" << pivot->second << "\n";
+	
+	merge_vec(vec, begin, pivot);
+	merge_vec(vec, pivot, end);
+	
+	merge_swap_segment_vec(vec, begin, end);
+	(void)vec;
+	(void)begin;
+	(void)end;
+}
+
+void PmergeMe::merge_swap_segment_vec(vector2 &vec, vector2::iterator begin, vector2::iterator end)
+{
+	std::cout << "\nmerge swapping: ";
+	std::cout << "(b)" << begin->first << "\t(s)" << begin->second << "\t\t(b)" << end->first << "\t(s)" << end->second << "\n";
+
+	vector2::iterator anchor = begin + ((end - begin) / 2) + 1;
+	std::cout << "\nanchor: ";
+	std::cout << "(b)" << anchor->first << " \t\t(s)" << anchor->second << "\n";
+
+	(void)vec;
+	(void)begin;
+	(void)end;
 }
 
 #include<unistd.h>
@@ -70,7 +125,7 @@ void PmergeMe::sort_deque(void)
 {
 	_bench_start_time = get_curr_time();
 	std::cout << "sort_deque in process... " << std::endl;
-	sleep(4);
+	// sleep(4);
 	_bench_end_time = get_curr_time();
 }
 
