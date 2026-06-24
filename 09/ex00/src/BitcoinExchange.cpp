@@ -26,6 +26,8 @@ BitcoinExchange &BitcoinExchange::operator=(BitcoinExchange const &source)
 
 void BitcoinExchange::load_base_dataset(const std::string input)
 {
+	_base_dataset.clear();
+	
 	std::ifstream dataset_file(input.c_str(), std::ifstream::in);
 	while (dataset_file.good())
 	{

@@ -7,25 +7,44 @@
 #include <cmath>
 #include <iomanip>
 #include <limits>
+#include <vector>
+#include <deque>
 #include <stdlib.h>
+#include <ctime>
+#include <sys/time.h>
 
 //-‵,┊ color defines
 
 #define CYN "\e[0;36m"
+#define RED "\e[0;31m"
 #define DEF "\e[0m"
+
+# ifndef DEBUG
+#  define DEBUG 0
+# endif
 
 // -->┊( PMERGE ME )┊.´-★☆★
 
 class PmergeMe
 {
 public:
-	static void convert(std::string input);
-
-private:
-	PmergeMe(void);	// default constructor
+	PmergeMe(char **av);
 	PmergeMe(PmergeMe const &source);	// copy constructor
 	~PmergeMe(void);	// destructor
 	PmergeMe &operator=(PmergeMe const &source);	// copy assignment operator overload
+	
+private:
+	PmergeMe(void);	// default constructor
+	std::vector<int> _array_vec;
+	std::deque<int> _array_deque;
+	time_t _bench_start_time;
+	time_t _bench_end_time;
+	
+	void print_array(std::string str) const;
+	void print_time(std::string container) const;
+	void sort_vec(void);
+	void sort_deque(void);
+	static time_t get_curr_time(void);
 };
 
 #endif

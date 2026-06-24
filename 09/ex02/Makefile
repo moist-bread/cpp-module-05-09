@@ -2,9 +2,10 @@
 NAME	=	PmergeMe
 
 # -->┊( COMMANDS AND FLAGS )┊.´-★☆★
-CXX	=	c++
-CXXFLAGS	=	-Wall -Wextra -Werror -g -std=c++98
-VAL		=	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes -s
+CXX			=	c++
+CXXFLAGS	=	-Wall -Wextra -Werror -g -std=c++98 -D DEBUG=$(DEBUG)
+VAL			=	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes -s
+DEBUG		=	1
 
 # -->┊( DIRECTORIES )┊.´-★☆★
 SRC_DIR	=	src
@@ -47,17 +48,20 @@ re:	fclean all
 
 # -->┊( EXECUTION RULES )┊.´-★☆★
 exe: all
-	./$(NAME) k
+	./$(NAME) 1 5 2 3
 
 rexe: re
 	@echo "\n"
-	./$(NAME) 14.86f
+	./$(NAME) 8 9 9 9 9 4 1
 
 val: all
-	$(VAL) ./$(NAME) 7777777777777.0
+	$(VAL) ./$(NAME) 7777777777777
 
+debug: fclean
+	make all DEBUG=1
+	./$(NAME) "8 9 * 9 - 9a - 9 - 4 - 1 +"
 
-.PHONY: all clean fclean re exe rexe val
+.PHONY: all clean fclean re exe rexe val debug
 
 
 # -->┊( COSMETICS )┊.´-★☆★

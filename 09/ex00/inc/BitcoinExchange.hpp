@@ -7,11 +7,10 @@
 
 //-‵,┊ color defines
 
-#define RED "\e[0;31m"
-#define YEL "\e[0;33m"
 #define CYN "\e[0;36m"
+#define YEL "\e[0;33m"
+#define RED "\e[0;31m"
 #define DEF "\e[0m"
-
 
 # ifndef DEBUG
 #  define DEBUG 0

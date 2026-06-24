@@ -2,30 +2,36 @@
 #define RPN_HPP
 
 //-‵,┊ needed libs by class
-#include <iostream>
 #include <string>
-#include <cmath>
-#include <iomanip>
-#include <limits>
-#include <stdlib.h>
+#include <stack>
 
 //-‵,┊ color defines
 
 #define CYN "\e[0;36m"
+#define RED "\e[0;31m"
 #define DEF "\e[0m"
+
+# ifndef DEBUG
+#  define DEBUG 0
+# endif
 
 // -->┊( RPN )┊.´-★☆★
 
 class RPN
 {
 public:
-	static void convert(std::string input);
+	static void process_expression(std::string exp);
 
 private:
 	RPN(void);	// default constructor
 	RPN(RPN const &source);	// copy constructor
 	~RPN(void);	// destructor
 	RPN &operator=(RPN const &source);	// copy assignment operator overload
+
+	static void operation(const char &op);
+	static std::stack<size_t> _nums;
+	static const char *_operators;
+	static const short _amount_op;
 };
 
 #endif

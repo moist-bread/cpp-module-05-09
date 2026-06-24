@@ -1,13 +1,21 @@
 #include "../inc/RPN.hpp"
 
+#include <iostream>
+
 int main(int ac, char **av)
 {
-	std::cout << std::endl;
-	std::cout << CYN ">>┈┈┈>   REVERSE POLISH NOTATION 🔜🔎";
-	std::cout << DEF << std::endl << std::endl;
+	std::cout << CYN "\n>>┈┈┈>   REVERSE POLISH NOTATION 🔜🔎\n\n" DEF;
 
 	if (ac != 2)
-		return (std::cout << "usage: ./RPN [input]" << std::endl, 2);
-	RPN::convert(av[1]);
+		return (std::cout << "usage: ./btc [input file]" << std::endl, 2);
+	try
+	{
+		RPN::process_expression(av[1]);
+	}
+	catch (const std::exception &e)
+	{
+		std::cerr << RED "[ERROR] " DEF << e.what() << std::endl;
+		return (1);
+	}
 	return (0);
 }

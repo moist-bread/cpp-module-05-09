@@ -62,7 +62,7 @@ debug: fclean
 	./$(NAME) ./assets/input.txt
 
 
-.PHONY: all clean fclean re exe rexe val
+.PHONY: all clean fclean re exe rexe val debug
 
 
 # -->┊( COSMETICS )┊.´-★☆★
