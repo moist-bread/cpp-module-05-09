@@ -16,7 +16,9 @@
 
 //-‵,┊ color defines
 
+#define BLK "\e[0;30m"
 #define CYN "\e[0;36m"
+#define GRN "\e[0;32m"
 #define RED "\e[0;31m"
 #define DEF "\e[0m"
 
@@ -48,7 +50,7 @@ private:
 
 	void sort_vec(void);
 	void merge_vec(vector2 &vec, vector2::iterator begin, vector2::iterator end);
-	void merge_swap_segment_vec(vector2 &vec, vector2::iterator begin, vector2::iterator end);
+	void merge_swap_segment_vec(vector2::iterator begin, vector2::iterator end);
 	
 
 	void sort_deque(void);

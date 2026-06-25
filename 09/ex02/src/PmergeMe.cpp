@@ -15,7 +15,7 @@ PmergeMe::PmergeMe(char **av): _bench_start_time(0), _bench_end_time(0)
 		else if (std::count(_array_vec.begin(), _array_vec.end(), _array_vec.back()) > 1)
 			throw(std::runtime_error("repeated integer not allowed: \"" + var_to_str(av[i]) + "\"" ));
 		if (DEBUG)
-			std::cout << "inserted elem: " << av[i] << std::endl;
+			std::cout << "inserted element: " << av[i] << std::endl;
 	}
 	_array_deque.insert (_array_deque.begin(), _array_vec.begin(), _array_vec.end());
 
@@ -74,8 +74,11 @@ void PmergeMe::sort_vec(void)
 
 	std::cout << "\npairs...\n\n";
 	for (vector2::const_iterator it = pairs.begin(); it != pairs.end(); it++)
-		std::cout << "(b)" << it->first << " \t\t(s)" << it->second << "\n";
+		std::cout << "(b)" << it->first << BLK " \t\t(s)" << it->second << DEF "\n";
 	std::cout << std::endl;
+	if (_array_vec.size() % 2)
+		std::cout << "stached: (n)" << _array_vec[_array_vec.size() - 1] << "\n\n";
+
 
 
 	// !! Recursively sort the ⌊ n / 2 ⌋ larger elements from each pair
@@ -83,43 +86,83 @@ void PmergeMe::sort_vec(void)
 	// -- after that the pairs become pairs of pairs, so for 8 numbers you only need 1 comparison
 	merge_vec(pairs, pairs.begin(), pairs.end() - 1);
 
+
+	std::cout << "\npairs...\n\n";
+	for (vector2::const_iterator it = pairs.begin(); it != pairs.end(); it++)
+		std::cout << "(b)" << it->first << BLK " \t\t(s)" << it->second << DEF "\n";
+
 	_bench_end_time = get_curr_time();
 }
 
+#include<unistd.h>
+
 void PmergeMe::merge_vec(vector2 &vec, vector2::iterator begin, vector2::iterator end)
 {
-	if (end - begin <= 2 ) // less than 2 elems
+	std::cout << "\nbegin: ";
+	std::cout << "(b)" << begin->first << BLK "\t(s)" << begin->second << DEF "\n";
+	std::cout << "end: ";
+	std::cout << "(b)" << end->first << BLK "\t(s)" << end->second << DEF "\n\n";
+
+	if (end - begin < 1 ) // there's only one element
+	{
+		std::cout << CYN "solo element" DEF << std::endl;
 		return ;
+	}
 	
-	vector2::iterator pivot = begin + ((end - begin) / 2);
-	std::cout << "math: " << ((end - begin) / 2) << std::endl;
+	vector2::iterator pivot = begin + ((end - begin + 1) / 2);
+	std::cout << "end - begin + 1: " << (end - begin + 1);
+	std::cout << " / by 2: " << ((end - begin + 1) / 2) << std::endl;
 	std::cout << "\npivot: ";
-	std::cout << "(b)" << pivot->first << " \t\t(s)" << pivot->second << "\n";
+	std::cout << "(b)" << pivot->first << BLK " \t\t(s)" << pivot->second << DEF "\n";
 	
-	merge_vec(vec, begin, pivot);
-	merge_vec(vec, pivot, end);
+	merge_vec(vec, begin, pivot - (begin != pivot));
+	merge_vec(vec, pivot + (begin == pivot), end);
 	
-	merge_swap_segment_vec(vec, begin, end);
-	(void)vec;
-	(void)begin;
-	(void)end;
+	merge_swap_segment_vec(begin, end);
+	for (vector2::const_iterator it = vec.begin(); it != vec.end(); it++)
+		std::cout << "(b)" << it->first << BLK " \t\t(s)" << it->second << DEF "\n";
 }
 
-void PmergeMe::merge_swap_segment_vec(vector2 &vec, vector2::iterator begin, vector2::iterator end)
+void PmergeMe::merge_swap_segment_vec(vector2::iterator begin, vector2::iterator end)
 {
-	std::cout << "\nmerge swapping: ";
-	std::cout << "(b)" << begin->first << "\t(s)" << begin->second << "\t\t(b)" << end->first << "\t(s)" << end->second << "\n";
+	std::cout << CYN "\nmerge swapping: " DEF;
+	std::cout << "(b)" << begin->first << BLK "\t(s)" << begin->second;
+	std::cout << DEF "\t\t(b)" << end->first << BLK "\t(s)" << end->second << DEF "\n";
 
-	vector2::iterator anchor = begin + ((end - begin) / 2) + 1;
+	std::cout << "end - begin + 1: " << (end - begin + 1);
+	std::cout << " / by 2: " << ((end - begin + 1) / 2) << std::endl;
+
+	vector2::iterator anchor = begin + ((end - begin + 1) / 2);
 	std::cout << "\nanchor: ";
-	std::cout << "(b)" << anchor->first << " \t\t(s)" << anchor->second << "\n";
+	std::cout << "(b)" << anchor->first << BLK " \t\t(s)" << anchor->second << DEF "\n";
 
-	(void)vec;
-	(void)begin;
-	(void)end;
+	
+
+	// -- WRONG, i need to mix and match when MERGING to sort
+	if (begin->first > anchor->first)
+	{
+		if (!((end - begin + 1) % 2))
+		{
+			std::swap_ranges(begin, anchor, anchor);
+			std::cout << RED "\npost swap ranges...\n" DEF;
+		}
+		else
+		{
+			while (anchor <= end)
+			{
+				std::cout << "\nanchor in loop: ";
+				std::cout << "(b)" << anchor->first << BLK " \t\t(s)" << anchor->second << DEF "\n";
+				std::swap(*begin, *anchor);
+				anchor++;
+				begin++;
+			}
+			std::cout << RED "\nOTHER swap...\n" DEF;
+		}
+	}
+	else
+		std::cout << GRN "\ncorrect order!\n" DEF;
 }
 
-#include<unistd.h>
 
 void PmergeMe::sort_deque(void)
 {
