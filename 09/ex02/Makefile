@@ -57,9 +57,9 @@ rexe: re
 val: all
 	$(VAL) ./$(NAME) 7777777777777
 
-debug: fclean
+debug:
 	make all DEBUG=1
-	./$(NAME) "1 5 2 3"
+	./$(NAME) `shuf -i 1-30 -n 30 | tr "\n" " "`
 
 .PHONY: all clean fclean re exe rexe val debug
 

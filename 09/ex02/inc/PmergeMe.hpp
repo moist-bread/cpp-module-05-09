@@ -16,6 +16,7 @@
 
 //-‵,┊ color defines
 
+#define YEL "\e[0;33m"
 #define BLK "\e[0;30m"
 #define CYN "\e[0;36m"
 #define GRN "\e[0;32m"
@@ -44,18 +45,21 @@ private:
 	std::deque<int> _array_deque;
 	time_t _bench_start_time;
 	time_t _bench_end_time;
+	size_t _comp_amount;
 	
 	void print_array(std::string str) const;
 	void print_time(std::string container) const;
+	void print_comp(std::string container) const;
 
 	void sort_vec(void);
 	void merge_vec(vector2 &vec, vector2::iterator begin, vector2::iterator end);
 	void merge_swap_segment_vec(vector2::iterator begin, vector2::iterator end);
 	
-
+	
 	void sort_deque(void);
 	
 	static time_t get_curr_time(void);
+	bool bigger_than(int x, int y);
 };
 
 #endif

@@ -4,7 +4,7 @@
 #include <ctype.h> // isdigit
 #include <algorithm> // count
 
-std::stack<size_t> RPN::_nums;
+std::stack<int> RPN::_nums;
 const char *RPN::_operators = "+-/*";
 const short RPN::_amount_op = 4;
 
@@ -28,7 +28,7 @@ void RPN::process_expression(std::string exp)
 {
 	std::cout << "RPN processing the following expression: " << exp << std::endl;
 
-	while (!RPN::_nums.empty()) // empty out stack
+	while (!RPN::_nums.empty())
 		RPN::_nums.pop();
 
 	while (!exp.empty())
@@ -63,15 +63,17 @@ void RPN::process_expression(std::string exp)
 	std::cout << "result = " << RPN::_nums.top() << std::endl;
 }
 
+#include <limits>
+
 void RPN::operation(const char &op)
 {
 	if (RPN::_nums.size() < 2)
 		throw(std::runtime_error("not enough numbers to operate on"));
 
-	size_t result = 0;
-	size_t y = RPN::_nums.top();
+	long result = 0;
+	long y = static_cast<long>(RPN::_nums.top());
 	RPN::_nums.pop();
-	size_t x = RPN::_nums.top();
+	long x = static_cast<long>(RPN::_nums.top());
 	RPN::_nums.pop();
 
 	switch (op)
@@ -93,5 +95,9 @@ void RPN::operation(const char &op)
 	default:
 		throw(std::runtime_error("invalid character in expression"));
 	}
-	RPN::_nums.push(result);
+
+	if (result < static_cast<long>(std::numeric_limits<int>::min()) || result > static_cast<long>(std::numeric_limits<int>::max()))
+		throw(std::runtime_error("int overflowed during operations"));
+
+	RPN::_nums.push(static_cast<int>(result));
 }

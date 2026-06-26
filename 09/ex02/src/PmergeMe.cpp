@@ -5,7 +5,7 @@
 
 PmergeMe::PmergeMe(void) {}
 
-PmergeMe::PmergeMe(char **av): _bench_start_time(0), _bench_end_time(0)
+PmergeMe::PmergeMe(char **av): _bench_start_time(0), _bench_end_time(0), _comp_amount(0)
 {
 	for (size_t i = 0; av[i]; i++)
 	{
@@ -15,17 +15,22 @@ PmergeMe::PmergeMe(char **av): _bench_start_time(0), _bench_end_time(0)
 		else if (std::count(_array_vec.begin(), _array_vec.end(), _array_vec.back()) > 1)
 			throw(std::runtime_error("repeated integer not allowed: \"" + var_to_str(av[i]) + "\"" ));
 		if (DEBUG)
-			std::cout << "inserted element: " << av[i] << std::endl;
+			std::cout << YEL "inserted:\t" DEF << av[i] << std::endl;
 	}
+	if (DEBUG)
+		std::cout << std::endl;
 	_array_deque.insert (_array_deque.begin(), _array_vec.begin(), _array_vec.end());
 
 	print_array("before");
+	
 	sort_vec();
 	print_array("after");
 	print_time("vector");
-	sort_deque();
-	print_time("deque");
+	print_comp("vector");
 	
+	sort_deque();
+	print_time("deque ");
+	print_comp("deque ");
 }
 
 PmergeMe::PmergeMe(PmergeMe const &source)
@@ -44,27 +49,38 @@ PmergeMe &PmergeMe::operator=(PmergeMe const &source)
 
 void PmergeMe::print_array(std::string str) const
 {
-	std::cout << CYN "[ "<< str << " ]	" DEF;
+	std::cout << CYN "[ "<< str << " ]\t" DEF;
 	for (std::vector<int>::const_iterator it = _array_vec.begin(); it != _array_vec.end(); it++)
-		std::cout << " " << *it;
+		std::cout << *it << " ";
 	std::cout << ";" << std::endl;
 }
 
 void PmergeMe::print_time(std::string container) const
 {
 	std::cout << CYN "time to process a range of [" DEF << _array_vec.size();
-	std::cout <<  CYN "] values with std::" << container << ":	" DEF;
+	std::cout <<  CYN "] values with std::" DEF << container << CYN ":\t" DEF;
 	std::cout << _bench_end_time - _bench_start_time << "ms" << std::endl;
+}
+
+void PmergeMe::print_comp(std::string container) const
+{
+	std::cout << CYN "comparisons done on a range of [" DEF << _array_vec.size();
+	std::cout <<  CYN "] values with std::" DEF << container << CYN ":\t" DEF;
+	std::cout << _comp_amount << std::endl;
 }
 
 void PmergeMe::sort_vec(void)
 {
-	std::cout << "sort_vec in process... " << std::endl;
-
 	_bench_start_time = get_curr_time();
+	_comp_amount = 0;
+
 	vector2 pairs;
 	
-	for ( size_t i = 0; i + 2 < _array_vec.size(); i += 2)
+	//  n = number of players; 2r = n || 2r + 1 = n; r = half of players
+
+	// Pair off 2r of the players and let the pairs play in the first round leaving
+	// one man out if n is odd
+	for ( size_t i = 0; i + 2 <= _array_vec.size(); i += 2)
 	{
 		if (_array_vec[i] > _array_vec[i + 1])
 			pairs.push_back(std::make_pair(_array_vec[i], _array_vec[i + 1]));
@@ -72,7 +88,7 @@ void PmergeMe::sort_vec(void)
 			pairs.push_back(std::make_pair(_array_vec[i + 1], _array_vec[i]));
 	}
 
-	std::cout << "\npairs...\n\n";
+	std::cout << YEL "\npairs...\n" DEF;
 	for (vector2::const_iterator it = pairs.begin(); it != pairs.end(); it++)
 		std::cout << "(b)" << it->first << BLK " \t\t(s)" << it->second << DEF "\n";
 	std::cout << std::endl;
@@ -84,91 +100,135 @@ void PmergeMe::sort_vec(void)
 	// !! Recursively sort the ⌊ n / 2 ⌋ larger elements from each pair
 	// -- instead of comparing every number only compare the pairs
 	// -- after that the pairs become pairs of pairs, so for 8 numbers you only need 1 comparison
+	if (pairs.empty())
+	{
+		_bench_end_time = get_curr_time();
+		return;
+	}
+
 	merge_vec(pairs, pairs.begin(), pairs.end() - 1);
 
-
-	std::cout << "\npairs...\n\n";
+	std::cout << YEL "\npairs...\n" DEF;
 	for (vector2::const_iterator it = pairs.begin(); it != pairs.end(); it++)
 		std::cout << "(b)" << it->first << BLK " \t\t(s)" << it->second << DEF "\n";
+	std::cout << std::endl;
+
+	// call b1 and the a's the "main chain"
+	std::vector<int> main_chain;
+	main_chain.push_back(pairs.begin()->second);
+	for (vector2::const_iterator it = pairs.begin(); it != pairs.end(); it++)
+		main_chain.push_back(it->first);
+
+	std::cout << YEL "[ main chain ]\t" DEF;
+	for (std::vector<int>::const_iterator it = main_chain.begin(); it != main_chain.end(); it++)
+		std::cout << *it << " ";
+	std::cout << ";" << std::endl;
+	std::cout << std::endl;
+	std::cout << std::endl;
 
 	_bench_end_time = get_curr_time();
 }
 
-#include<unistd.h>
 
 void PmergeMe::merge_vec(vector2 &vec, vector2::iterator begin, vector2::iterator end)
 {
 	std::cout << "\nbegin: ";
 	std::cout << "(b)" << begin->first << BLK "\t(s)" << begin->second << DEF "\n";
 	std::cout << "end: ";
-	std::cout << "(b)" << end->first << BLK "\t(s)" << end->second << DEF "\n\n";
+	std::cout << "(b)" << end->first << BLK "\t(s)" << end->second << DEF "\n";
 
-	if (end - begin < 1 ) // there's only one element
+	if (end - begin < 1 )
 	{
-		std::cout << CYN "solo element" DEF << std::endl;
+		std::cout << YEL "solo element" DEF << std::endl;
 		return ;
 	}
 	
 	vector2::iterator pivot = begin + ((end - begin + 1) / 2);
+
 	std::cout << "end - begin + 1: " << (end - begin + 1);
 	std::cout << " / by 2: " << ((end - begin + 1) / 2) << std::endl;
-	std::cout << "\npivot: ";
+	std::cout << "pivot: ";
 	std::cout << "(b)" << pivot->first << BLK " \t\t(s)" << pivot->second << DEF "\n";
 	
 	merge_vec(vec, begin, pivot - (begin != pivot));
 	merge_vec(vec, pivot + (begin == pivot), end);
 	
+	std::cout << RED "\nbefore merge swapping\n" DEF;
+	for (vector2::const_iterator it = vec.begin(); it != vec.end(); it++)
+		std::cout << "(b)" << it->first << BLK " \t\t(s)" << it->second << DEF "\n";
+	
 	merge_swap_segment_vec(begin, end);
+	
 	for (vector2::const_iterator it = vec.begin(); it != vec.end(); it++)
 		std::cout << "(b)" << it->first << BLK " \t\t(s)" << it->second << DEF "\n";
 }
 
 void PmergeMe::merge_swap_segment_vec(vector2::iterator begin, vector2::iterator end)
 {
-	std::cout << CYN "\nmerge swapping: " DEF;
+	vector2::iterator anchor = begin + ((end - begin + 1) / 2);
+
+	std::cout << YEL "\nmerge swapping:\t" DEF;
 	std::cout << "(b)" << begin->first << BLK "\t(s)" << begin->second;
 	std::cout << DEF "\t\t(b)" << end->first << BLK "\t(s)" << end->second << DEF "\n";
+	std::cout << YEL "end - begin + 1: " DEF << (end - begin + 1);
+	std::cout << YEL " / by 2: " DEF << ((end - begin + 1) / 2) << std::endl;
+	std::cout << YEL "anchor:\t\t" DEF;
+	std::cout << "(b)" << anchor->first << BLK " \t(s)" << anchor->second << DEF "\n\n";
 
-	std::cout << "end - begin + 1: " << (end - begin + 1);
-	std::cout << " / by 2: " << ((end - begin + 1) / 2) << std::endl;
+	// sorting pairs of pairs based on the anchor (leaving it unsorted) 
+	// if (bigger_than(begin->first, anchor->first))
+	// {
+	// 	if (!((end - begin + 1) % 2))
+	// 	{
+	// 		std::swap_ranges(begin, anchor, anchor);
+	// 		std::cout << RED "\npost swap ranges...\n" DEF;
+	// 	}
+	// 	else
+	// 	{
+	// 		while (anchor <= end)
+	// 		{
+	// 			std::cout << "\nanchor in loop: ";
+	// 			std::cout << "(b)" << anchor->first << BLK " \t\t(s)" << anchor->second << DEF "\n";
+	// 			std::swap(*begin, *anchor);
+	// 			anchor++;
+	// 			begin++;
+	// 		}
+	// 		std::cout << RED "\nOTHER swap...\n" DEF;
+	// 	}
+	// }
+	// else
+	// 	std::cout << GRN "\ncorrect order!\n" DEF;
 
-	vector2::iterator anchor = begin + ((end - begin + 1) / 2);
-	std::cout << "\nanchor: ";
-	std::cout << "(b)" << anchor->first << BLK " \t\t(s)" << anchor->second << DEF "\n";
-
-	
-
-	// -- WRONG, i need to mix and match when MERGING to sort
-	if (begin->first > anchor->first)
+	// merge sort (temporary, to be replaced with merge insert)
+	while (begin <= end && anchor <= end)
 	{
-		if (!((end - begin + 1) % 2))
+		if (bigger_than(begin->first, anchor->first))
 		{
-			std::swap_ranges(begin, anchor, anchor);
-			std::cout << RED "\npost swap ranges...\n" DEF;
+			std::cout << RED "swap an w/ bg:\t" DEF;
+			std::cout << "(b)" << anchor->first << BLK "\t(s)" << anchor->second;
+			std::cout << DEF "\t\t(b)" << begin->first << BLK "\t(s)" << begin->second << DEF "\n";
+
+			std::pair<int, int> temp = *anchor;
+			std::copy_backward(begin, anchor, anchor + 1);
+			*begin = temp;
+			anchor++;
 		}
 		else
-		{
-			while (anchor <= end)
-			{
-				std::cout << "\nanchor in loop: ";
-				std::cout << "(b)" << anchor->first << BLK " \t\t(s)" << anchor->second << DEF "\n";
-				std::swap(*begin, *anchor);
-				anchor++;
-				begin++;
-			}
-			std::cout << RED "\nOTHER swap...\n" DEF;
-		}
+			std::cout << GRN "correct order\n" DEF;
+		begin++;
+		if (begin == anchor)
+			anchor++;
 	}
-	else
-		std::cout << GRN "\ncorrect order!\n" DEF;
+	std::cout << std::endl;
 }
-
 
 void PmergeMe::sort_deque(void)
 {
 	_bench_start_time = get_curr_time();
+	_comp_amount = 0;
+
 	std::cout << "sort_deque in process... " << std::endl;
-	// sleep(4);
+
 	_bench_end_time = get_curr_time();
 }
 
@@ -179,4 +239,10 @@ time_t	PmergeMe::get_curr_time(void)
 
 	gettimeofday(&tv, NULL);
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+}
+
+bool PmergeMe::bigger_than(int x, int y)
+{
+	_comp_amount++;
+	return (x > y);
 }

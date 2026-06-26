@@ -29,7 +29,7 @@ private:
 	RPN &operator=(RPN const &source);	// copy assignment operator overload
 
 	static void operation(const char &op);
-	static std::stack<size_t> _nums;
+	static std::stack<int> _nums;
 	static const char *_operators;
 	static const short _amount_op;
 };
