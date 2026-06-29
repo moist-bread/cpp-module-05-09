@@ -10,6 +10,7 @@
 #include <vector>
 #include <deque>
 #include <stdlib.h>
+#include <unistd.h>
 #include <ctime>
 #include <sys/time.h>
 
@@ -38,6 +39,7 @@ public:
 	PmergeMe &operator=(PmergeMe const &source);	// copy assignment operator overload
 	
 	typedef std::vector<std::pair<int, int> > vector2;
+	typedef std::vector<std::pair<int, std::vector<int>::iterator> > vec_match;
 	
 private:
 	PmergeMe(void);	// default constructor
@@ -54,12 +56,13 @@ private:
 	void sort_vec(void);
 	void merge_vec(vector2 &vec, vector2::iterator begin, vector2::iterator end);
 	void merge_swap_segment_vec(vector2::iterator begin, vector2::iterator end);
-	
+	void binary_insert_vec(std::vector<int> &main_chain, vec_match &pending);
 	
 	void sort_deque(void);
 	
 	static time_t get_curr_time(void);
 	bool bigger_than(int x, int y);
+	size_t jacobsthal_gen(size_t n) const;
 };
 
 #endif

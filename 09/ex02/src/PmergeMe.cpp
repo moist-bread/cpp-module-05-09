@@ -2,6 +2,7 @@
 #include "../inc/utils.tpp"
 
 #include <algorithm> // count
+#include <math.h> // pow
 
 PmergeMe::PmergeMe(void) {}
 
@@ -74,6 +75,12 @@ void PmergeMe::sort_vec(void)
 	_bench_start_time = get_curr_time();
 	_comp_amount = 0;
 
+	if (_array_vec.size() == 1)
+	{
+		_bench_end_time = get_curr_time();
+		return ;
+	}
+
 	vector2 pairs;
 	
 	//  n = number of players; 2r = n || 2r + 1 = n; r = half of players
@@ -113,18 +120,26 @@ void PmergeMe::sort_vec(void)
 		std::cout << "(b)" << it->first << BLK " \t\t(s)" << it->second << DEF "\n";
 	std::cout << std::endl;
 
-	// call b1 and the a's the "main chain"
+	// "call b1 and the a's the "main chain"""
 	std::vector<int> main_chain;
-	main_chain.push_back(pairs.begin()->second);
-	for (vector2::const_iterator it = pairs.begin(); it != pairs.end(); it++)
-		main_chain.push_back(it->first);
+	main_chain.reserve(_array_vec.size());
 
-	std::cout << YEL "[ main chain ]\t" DEF;
-	for (std::vector<int>::const_iterator it = main_chain.begin(); it != main_chain.end(); it++)
-		std::cout << *it << " ";
-	std::cout << ";" << std::endl;
-	std::cout << std::endl;
-	std::cout << std::endl;
+	// remaining b's and the stashed value are pending
+	// keep them associated with their "bigger" pair value
+	vec_match pending;
+	pending.reserve(pairs.size() + (_array_vec.size() % 2));
+
+	main_chain.push_back(pairs.begin()->second);
+	main_chain.push_back(pairs.begin()->first);
+	for (vector2::const_iterator it = pairs.begin() + 1; it != pairs.end(); it++)
+	{
+		main_chain.push_back(it->first);
+		pending.push_back(std::make_pair(it->second, main_chain.end()));
+	}
+	if (_array_vec.size() % 2)
+		pending.push_back(std::make_pair(_array_vec[_array_vec.size() - 1], main_chain.end()));
+	
+	binary_insert_vec(main_chain, pending);
 
 	_bench_end_time = get_curr_time();
 }
@@ -221,6 +236,39 @@ void PmergeMe::merge_swap_segment_vec(vector2::iterator begin, vector2::iterator
 	}
 	std::cout << std::endl;
 }
+void PmergeMe::binary_insert_vec(std::vector<int> &main_chain, vec_match &pending)
+{
+	(void)main_chain;
+	(void)pending;
+	std::cout << YEL "[ main chain ]\t" DEF;
+	for (std::vector<int>::const_iterator it = main_chain.begin(); it != main_chain.end(); it++)
+		std::cout << *it << " ";
+	std::cout << ";" << std::endl;
+	std::cout << std::endl;
+
+	std::cout << YEL "[ pending ]\t" DEF;
+	for (vec_match::const_iterator it = pending.begin(); it != pending.end(); it++)
+		std::cout << it->first << " (b)" << *it->second << ", ";
+	std::cout << ";" << std::endl;
+	std::cout << std::endl;
+	std::cout << std::endl;
+
+	std::cout << YEL "[ jacob ]\t" DEF;
+	for (size_t i = 0; i < _array_vec.size(); i++)
+		std::cout << jacobsthal_gen(i) << " ";
+	std::cout << ";" << std::endl;
+	std::cout << std::endl;
+
+	main_chain.insert(main_chain.begin(), 1000);
+	main_chain.insert(main_chain.begin() + 2, 100);
+
+	std::cout << YEL "[ pending ]\t" DEF;
+	for (vec_match::const_iterator it = pending.begin(); it != pending.end(); it++)
+		std::cout << it->first << " (b)" << *it->second << ", ";
+	std::cout << ";" << std::endl;
+	std::cout << std::endl;
+	std::cout << std::endl;
+}
 
 void PmergeMe::sort_deque(void)
 {
@@ -228,6 +276,7 @@ void PmergeMe::sort_deque(void)
 	_comp_amount = 0;
 
 	std::cout << "sort_deque in process... " << std::endl;
+	// sleep (1);
 
 	_bench_end_time = get_curr_time();
 }
@@ -245,4 +294,8 @@ bool PmergeMe::bigger_than(int x, int y)
 {
 	_comp_amount++;
 	return (x > y);
+}
+size_t PmergeMe::jacobsthal_gen(size_t n) const
+{
+	return ((std::pow(2, n) - std::pow(-1, n)) / 3); // (2^n -(-1)^n) / 3
 }
