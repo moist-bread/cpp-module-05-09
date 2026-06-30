@@ -9,20 +9,9 @@
 std::map<Date, float> BitcoinExchange::_base_dataset;
 
 BitcoinExchange::BitcoinExchange(void) {}
-
-BitcoinExchange::BitcoinExchange(BitcoinExchange const &source)
-{
-	*this = source;
-}
-
+BitcoinExchange::BitcoinExchange(BitcoinExchange const &source) { *this = source; }
 BitcoinExchange::~BitcoinExchange(void) {}
-
-BitcoinExchange &BitcoinExchange::operator=(BitcoinExchange const &source)
-{
-	if (this != &source)
-		(void)source;
-	return (*this);
-}
+BitcoinExchange &BitcoinExchange::operator=(BitcoinExchange const &source) { (void)source; return (*this); }
 
 void BitcoinExchange::load_base_dataset(const std::string input)
 {
@@ -35,6 +24,7 @@ void BitcoinExchange::load_base_dataset(const std::string input)
 		std::getline(dataset_file, line);
 		if (!dataset_file.good() && line.empty())
 			break;
+		
 		if (BitcoinExchange::_base_dataset.empty())
 		{
 			if (line != "date,exchange_rate")
@@ -43,6 +33,7 @@ void BitcoinExchange::load_base_dataset(const std::string input)
 			if (!dataset_file.good())
 				throw(std::runtime_error("reference data set is missing data"));
 		}
+		
 		try
 		{
 			std::pair<Date, float> set(BitcoinExchange::extract_date(line), BitcoinExchange::extract_value(line, 1));
@@ -80,6 +71,7 @@ void BitcoinExchange::exchange_input(const std::string input)
 		std::getline(input_file, line);
 		if (!input_file.good() && line.empty())
 			break;
+		
 		if (!header_found)
 		{
 			if (line != "date | value")
@@ -87,6 +79,7 @@ void BitcoinExchange::exchange_input(const std::string input)
 			header_found = true;
 			continue;
 		}
+		
 		try
 		{
 			print_exchange(line);
@@ -98,7 +91,7 @@ void BitcoinExchange::exchange_input(const std::string input)
 	}
 }
 
-Date BitcoinExchange::extract_date(const std::string &input)
+Date BitcoinExchange::extract_date(const std::string &input) 
 {
 	return (Date(input.substr(0, 10)));
 }
@@ -113,6 +106,7 @@ float BitcoinExchange::extract_value(const std::string &input, const unsigned in
 	int n = NOT_SET;
 	float f = NOT_SET;
 	bool is_int;
+
 	try
 	{
 		n = str_to_num<int>(input.substr(10 + separator_size));
@@ -128,19 +122,26 @@ float BitcoinExchange::extract_value(const std::string &input, const unsigned in
 		throw(std::runtime_error("invalid negative value"));
 	else if (input.find(".") == std::string::npos && !is_int)
 		throw(std::runtime_error("invalid int overflow value"));
+	
 	return ((is_int ? static_cast<float>(n) : f));
 }
 
 void BitcoinExchange::print_exchange(const std::string &input)
 {
 	std::pair<Date, float> set(BitcoinExchange::extract_date(input), BitcoinExchange::extract_value(input, 3));
+
 	if (set.first < _base_dataset.begin()->first)
 		throw(std::runtime_error("invalid date " + var_to_str(set.first) + ", earlier than ref. dataset " + var_to_str(_base_dataset.begin()->first)));
+	else if (set.second > 1000.0)
+		throw(std::runtime_error("invalid value " + var_to_str(set.second) + ", bigger than 1000"));
 
 	std::map<Date, float>::const_iterator match_exchange = _base_dataset.upper_bound(set.first);
 	match_exchange--;
+	
 	std::cout << set.first << " => " << set.second << " = " <<  (match_exchange->second * set.second);
+	
 	if (DEBUG)
 		std::cout << " date matched: " << match_exchange->first;
+	
 	std::cout << std::endl;
 }

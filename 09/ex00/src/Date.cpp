@@ -67,7 +67,7 @@ bool Date::operator==(Date const &src) const { return (year == src.get_year() &&
 
 bool Date::operator!=(Date const &src) const { return (!(*this == src)); }
 
-// basic getters
+// !! basic getters
 
 const short &Date::get_year(void) const { return (year); }
 const short &Date::get_month(void) const { return (month); }
@@ -75,7 +75,6 @@ const short &Date::get_day(void) const { return (day); }
 
 void Date::extract_date(std::string &input)
 {
-	// std::cout << "Date input extracting from: \"" << input << "\"" << std::endl;
 	if (input.length() != 10)
 		throw(Date::InvalidDate(input));
 	if (input.find("-") != 4 && input.rfind("-") != 7)
@@ -87,7 +86,6 @@ void Date::extract_date(std::string &input)
 
 void Date::validate_date(void)
 {
-	// std::cout << "Date validating: " << *this << std::endl;
 	if (year < 1)
 		throw(InvalidDate(var_to_str(year)));
 	if (month < 1 || month > 12)

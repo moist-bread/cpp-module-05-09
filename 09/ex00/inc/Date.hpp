@@ -16,11 +16,11 @@
 class Date
 {
 public:
-	Date(void);					// default
+	Date(void); // default
 	Date(std::string input);
-	Date(Date const &source);	// copy
-	~Date(void);				// destructor
-	Date &operator=(Date const &source);	// copy assignment
+	Date(Date const &source); // copy
+	~Date(void); // destructor
+	Date &operator=(Date const &source); // copy assignment
 
 	// operators
 	bool operator>(Date const &src) const;
@@ -30,7 +30,7 @@ public:
 	bool operator==(Date const &src) const;
 	bool operator!=(Date const &src) const;
 	
-	
+	// getters
 	const short &get_year(void) const;
 	const short &get_month(void) const;
 	const short &get_day(void) const;
