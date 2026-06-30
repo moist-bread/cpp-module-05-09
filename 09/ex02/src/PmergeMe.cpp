@@ -11,8 +11,8 @@ PmergeMe::PmergeMe(char **av): _bench_start_time(0), _bench_end_time(0), _comp_a
 	for (size_t i = 0; av[i]; i++)
 	{
 		_array_vec.push_back(str_to_num<int>(av[i]));
-		if (_array_vec.back() < 0)
-			throw(std::runtime_error("negative integer not allowed: \"" + var_to_str(av[i]) + "\"" ));
+		if (_array_vec.back() <= 0)
+			throw(std::runtime_error("non positive integer not allowed: \"" + var_to_str(av[i]) + "\"" ));
 		else if (std::count(_array_vec.begin(), _array_vec.end(), _array_vec.back()) > 1)
 			throw(std::runtime_error("repeated integer not allowed: \"" + var_to_str(av[i]) + "\"" ));
 		if (DEBUG)
@@ -51,7 +51,7 @@ PmergeMe &PmergeMe::operator=(PmergeMe const &source)
 void PmergeMe::print_array(std::string str) const
 {
 	std::cout << CYN "[ "<< str << " ]\t" DEF;
-	for (std::vector<int>::const_iterator it = _array_vec.begin(); it != _array_vec.end(); it++)
+	for (vec_int_cnit it = _array_vec.begin(); it != _array_vec.end(); it++)
 		std::cout << *it << " ";
 	std::cout << ";" << std::endl;
 }
@@ -60,7 +60,7 @@ void PmergeMe::print_time(std::string container) const
 {
 	std::cout << CYN "time to process a range of [" DEF << _array_vec.size();
 	std::cout <<  CYN "] values with std::" DEF << container << CYN ":\t" DEF;
-	std::cout << _bench_end_time - _bench_start_time << "ms" << std::endl;
+	std::cout << _bench_end_time - _bench_start_time << "μs" << std::endl;
 }
 
 void PmergeMe::print_comp(std::string container) const
@@ -99,14 +99,13 @@ void PmergeMe::sort_vec(void)
 	for (vector2::const_iterator it = pairs.begin(); it != pairs.end(); it++)
 		std::cout << "(b)" << it->first << BLK " \t\t(s)" << it->second << DEF "\n";
 	std::cout << std::endl;
+	
 	if (_array_vec.size() % 2)
-		std::cout << "stached: (n)" << _array_vec[_array_vec.size() - 1] << "\n\n";
+		std::cout << "stached: (n)" << _array_vec.back() << "\n\n";
 
-
-
-	// !! Recursively sort the ⌊ n / 2 ⌋ larger elements from each pair
+	// !! Recursively sort the [ n / 2 ] larger elements from each pair
 	// -- instead of comparing every number only compare the pairs
-	// -- after that the pairs become pairs of pairs, so for 8 numbers you only need 1 comparison
+	// -- after that the pairs become pairs of pairs (less comparisons)
 	if (pairs.empty())
 	{
 		_bench_end_time = get_curr_time();
@@ -129,17 +128,39 @@ void PmergeMe::sort_vec(void)
 	vec_match pending;
 	pending.reserve(pairs.size() + (_array_vec.size() % 2));
 
+	// the jacobsthal numbers we are going to use for our insertion
+	std::vector<size_t> jacob;
+
+
 	main_chain.push_back(pairs.begin()->second);
 	main_chain.push_back(pairs.begin()->first);
+
+	size_t i = 3;
+	jacob.push_back(jacobsthal_gen(i++) - 2);
+
 	for (vector2::const_iterator it = pairs.begin() + 1; it != pairs.end(); it++)
 	{
 		main_chain.push_back(it->first);
+		if (main_chain.size() - 2 > jacob.back())
+		{
+			jacob.push_back(jacobsthal_gen(i++) - 2);
+			if (jacob.back() >= _array_vec.size() / 2)
+				jacob.back() = (_array_vec.size() / 2) - 1;
+		}
+		// ?? maybe have jacob already in consideration for the pending "matching" iterator
 		pending.push_back(std::make_pair(it->second, main_chain.end()));
 	}
-	if (_array_vec.size() % 2)
-		pending.push_back(std::make_pair(_array_vec[_array_vec.size() - 1], main_chain.end()));
 	
-	binary_insert_vec(main_chain, pending);
+	if (_array_vec.size() % 2)
+		pending.push_back(std::make_pair(_array_vec.back(), main_chain.end()));
+	
+	std::cout << YEL "[ jacob ]\t" DEF;
+	for (std::vector<size_t>::iterator it = jacob.begin(); it != jacob.end(); it++)
+		std::cout << *it << " ";
+	std::cout << ";" << std::endl;
+	std::cout << std::endl;
+
+	binary_insert_vec(main_chain, pending, jacob);
 
 	_bench_end_time = get_curr_time();
 }
@@ -236,12 +257,15 @@ void PmergeMe::merge_swap_segment_vec(vector2::iterator begin, vector2::iterator
 	}
 	std::cout << std::endl;
 }
-void PmergeMe::binary_insert_vec(std::vector<int> &main_chain, vec_match &pending)
+void PmergeMe::binary_insert_vec(std::vector<int> &main_chain, vec_match &pending, std::vector<size_t> &jacob)
 {
-	(void)main_chain;
-	(void)pending;
+	(void)jacob;
+	// for (size_t i = 0; i < _array_vec.size(); i++)
+	// 	jacobsthal_gen(i);
+	// std::cout << std::endl;
+
 	std::cout << YEL "[ main chain ]\t" DEF;
-	for (std::vector<int>::const_iterator it = main_chain.begin(); it != main_chain.end(); it++)
+	for (vec_int_cnit it = main_chain.begin(); it != main_chain.end(); it++)
 		std::cout << *it << " ";
 	std::cout << ";" << std::endl;
 	std::cout << std::endl;
@@ -251,23 +275,75 @@ void PmergeMe::binary_insert_vec(std::vector<int> &main_chain, vec_match &pendin
 		std::cout << it->first << " (b)" << *it->second << ", ";
 	std::cout << ";" << std::endl;
 	std::cout << std::endl;
-	std::cout << std::endl;
+		
+	size_t jacob_index = 3;
+	vec_match::iterator curr_insert =  pending.begin();
+	vec_match::iterator already_inserted =  pending.begin() - 1;
 
-	std::cout << YEL "[ jacob ]\t" DEF;
-	for (size_t i = 0; i < _array_vec.size(); i++)
-		std::cout << jacobsthal_gen(i) << " ";
-	std::cout << ";" << std::endl;
-	std::cout << std::endl;
+	while (already_inserted < pending.end() - 1)
+	{
+		int curr_jacob = jacobsthal_gen(jacob_index) - 2;
+		curr_insert = (pending.begin() + curr_jacob >= pending.end() ? pending.end() - 1 : pending.begin() + curr_jacob);
 
-	main_chain.insert(main_chain.begin(), 1000);
-	main_chain.insert(main_chain.begin() + 2, 100);
+		while (curr_insert > already_inserted)
+		{
+			std::cout << YEL "\n[ curr insert ]\t" DEF;
+			std::cout << curr_insert->first << " (b)" << *curr_insert->second << ";\n\n";
+			
+			vec_int_it begin = main_chain.begin();
+			vec_int_it end = curr_insert->second;
 
-	std::cout << YEL "[ pending ]\t" DEF;
-	for (vec_match::const_iterator it = pending.begin(); it != pending.end(); it++)
-		std::cout << it->first << " (b)" << *it->second << ", ";
-	std::cout << ";" << std::endl;
-	std::cout << std::endl;
-	std::cout << std::endl;
+			while (true)
+			{
+				std::cout << YEL "[ range ]\t" DEF;
+				std::cout << "(b)" << *begin << " (e)" << *end << ";\n";
+				
+				if (end - begin == 1)
+				{
+					if (bigger_than(curr_insert->first, *begin))
+						main_chain.insert(end, curr_insert->first);
+					else
+						main_chain.insert(begin, curr_insert->first);
+					
+					std::cout << GRN "[ POSITION FOUND ]\n" DEF;
+					// ?? rui updates the match offset every time an insertion is made 
+					break;
+				}
+
+				vec_int_it anchor = begin + ((end - begin + 1) / 2);
+				std::cout << YEL "[ anchor ]\t" DEF << *anchor << ";\n";
+
+				if (bigger_than(curr_insert->first, *anchor))
+					begin = anchor;
+				else
+					end = anchor;
+			}
+
+			std::cout << YEL "\n[ main chain ]\t" DEF;
+			for (vec_int_cnit it = main_chain.begin(); it != main_chain.end(); it++)
+				std::cout << *it << " ";
+			std::cout << ";" << std::endl;
+
+			curr_insert--;
+		}
+
+		std::cout << GRN "\n[ CURR JACOB DONE ]\n\n" DEF;
+		
+		std::cout << YEL "[ pending ]\t" DEF;
+		for (vec_match::const_iterator it = pending.begin(); it != pending.end(); it++)
+			std::cout << it->first << " (b)" << *it->second << ", ";
+		std::cout << ";" << std::endl;
+
+		already_inserted = (pending.begin() + curr_jacob >= pending.end() ? pending.end() - 1 : pending.begin() + curr_jacob);
+		jacob_index++;
+	}
+
+
+
+
+
+
+
 }
 
 void PmergeMe::sort_deque(void)
@@ -281,13 +357,13 @@ void PmergeMe::sort_deque(void)
 	_bench_end_time = get_curr_time();
 }
 
-/// @return current time in milliseconds
+/// @return current time in microseconds
 time_t	PmergeMe::get_curr_time(void)
 {
 	struct timeval	tv;
 
 	gettimeofday(&tv, NULL);
-	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+	return ((tv.tv_sec * 1000000) + tv.tv_usec);
 }
 
 bool PmergeMe::bigger_than(int x, int y)
@@ -297,5 +373,8 @@ bool PmergeMe::bigger_than(int x, int y)
 }
 size_t PmergeMe::jacobsthal_gen(size_t n) const
 {
-	return ((std::pow(2, n) - std::pow(-1, n)) / 3); // (2^n -(-1)^n) / 3
+	size_t result = (std::pow(2, n) - std::pow(-1, n)) / 3;
+	if (DEBUG)
+		std::cout << RED "[ jacobsthal ]\t" DEF << result << ";\n";
+	return (result); // (2^n -(-1)^n) / 3
 }

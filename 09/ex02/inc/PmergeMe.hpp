@@ -39,6 +39,8 @@ public:
 	PmergeMe &operator=(PmergeMe const &source);	// copy assignment operator overload
 	
 	typedef std::vector<std::pair<int, int> > vector2;
+	typedef std::vector<int>::iterator vec_int_it;
+	typedef std::vector<int>::const_iterator vec_int_cnit;
 	typedef std::vector<std::pair<int, std::vector<int>::iterator> > vec_match;
 	
 private:
@@ -56,7 +58,7 @@ private:
 	void sort_vec(void);
 	void merge_vec(vector2 &vec, vector2::iterator begin, vector2::iterator end);
 	void merge_swap_segment_vec(vector2::iterator begin, vector2::iterator end);
-	void binary_insert_vec(std::vector<int> &main_chain, vec_match &pending);
+	void binary_insert_vec(std::vector<int> &main_chain, vec_match &pending, std::vector<size_t> &jacob);
 	
 	void sort_deque(void);
 	
