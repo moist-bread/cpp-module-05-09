@@ -38,14 +38,17 @@ public:
 	~PmergeMe(void);	// destructor
 	PmergeMe &operator=(PmergeMe const &source);	// copy assignment operator overload
 	
+	typedef std::vector<int> vec_int;
 	typedef std::vector<std::pair<int, int> > vector2;
-	typedef std::vector<int>::iterator vec_int_it;
-	typedef std::vector<int>::const_iterator vec_int_cnit;
-	typedef std::vector<std::pair<int, std::vector<int>::iterator> > vec_match;
 	
+	typedef std::vector<std::pair<int, vec_int::iterator> > vec_match;
+	typedef std::vector<std::pair<std::pair<int, int>, vector2::iterator> > vector2_match;
+	
+	typedef std::vector<size_t> vec_size;
+
 private:
 	PmergeMe(void);	// default constructor
-	std::vector<int> _array_vec;
+	vec_int _array_vec;
 	std::deque<int> _array_deque;
 	time_t _bench_start_time;
 	time_t _bench_end_time;
@@ -56,9 +59,18 @@ private:
 	void print_comp(std::string container) const;
 
 	void sort_vec(void);
-	void merge_vec(vector2 &vec, vector2::iterator begin, vector2::iterator end);
+	void merge_vec(vector2 &vec, size_t pair_size);
+	void merge_sort_segments_vec(vector2 &vec, size_t pair_size);
+	void insert_segments_vec(vector2 &vec, size_t pair_size);
+	void prep_segment_insertion_vec(vector2 &main_chain, vector2_match &pending, vec_size &jacob, vector2 &pairs, size_t pair_size);
+	void binary_insert_segment_vec(vector2 &main_chain, vector2_match &pending, vec_size &jacob, int elem_size);
+
+
+
+	void old_merge_vec(vector2 &vec, vector2::iterator begin, vector2::iterator end);
 	void merge_swap_segment_vec(vector2::iterator begin, vector2::iterator end);
-	void binary_insert_vec(std::vector<int> &main_chain, vec_match &pending, std::vector<size_t> &jacob);
+	void prep_for_insertion_vec(vec_int &main_chain, vec_match &pending, vec_size &jacob, vector2 &pairs, bool &is_odd);
+	void binary_insert_vec(vec_int &main_chain, vec_match &pending, vec_size &jacob);
 	
 	void sort_deque(void);
 	
