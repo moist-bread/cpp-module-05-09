@@ -112,8 +112,6 @@ void PmergeMe::sort_vec(void)
 
 	merge_vec(pairs, 2);
 
-	// old_merge_vec(pairs, pairs.begin(), pairs.end() - 1); // -- REPLACE
-
 	if (DEBUG)
 	{
 		std::cout << YEL "\nsorted pairs...\n" DEF;
@@ -145,7 +143,7 @@ void PmergeMe::sort_vec(void)
 
 void PmergeMe::merge_vec(vector2 &vec, size_t pair_size)
 {
-	if (pair_size >= vec.size())
+	if (pair_size * 2 > vec.size())
 		return;
 	
 	merge_sort_segments_vec(vec, pair_size);
@@ -209,10 +207,6 @@ void PmergeMe::insert_segments_vec(vector2 &vec, size_t pair_size)
 	// keep them associated with their "bigger" pair value
 	vector2_match pending;
 
-
-	// pending.reserve(pairs.size() - 1 + is_odd);
-
-	
 	size_t odd_elems = ((vec.size() % pair_size >= pair_size / 2) * (pair_size / 2));
 	pending.reserve(((vec.size() - (vec.size() % pair_size) ) / 2) - (pair_size / 2) + odd_elems);
 
@@ -263,41 +257,35 @@ void PmergeMe::prep_segment_insertion_vec(vector2 &main_chain, vector2_match &pe
 	for (; begin + pair_size - 1 < pairs.end(); begin += pair_size)
 	{
 		vector2::iterator end = begin + pair_size;
-		if (pending.size() > *insertion_pivot * pair_size)
+		if (pending.size() > *insertion_pivot)
 			insertion_pivot++;
-		
-
-
-
-
 
 		size_t offset = (insertion_pivot == jacob.begin() ? 0 : (*(insertion_pivot - 1) * pair_size) + pair_size);
 
 		std::cout << YEL "[ prev jacob insertions ]\t" DEF << offset << ";\n";
 
-		offset += (*insertion_pivot - (*insertion_pivot % (pair_size / 2)));
-		// offset += (*insertion_pivot - (*insertion_pivot % (pair_size / 2))) - pending.size() + (pending.size() % (pair_size / 2));
+		offset += *insertion_pivot - pending.size();
+		
+		// (pair_size / 2) 
 
-		std::cout << YEL "[ (*insertion_pivot - (*insertion_pivot % (pair_size / 2))) ]\t" DEF << (*insertion_pivot - (*insertion_pivot % (pair_size / 2))) << ";\n";
-		// std::cout << YEL "[ pending.size() ]\t" DEF << pending.size() << ";\n";
-		// std::cout << YEL "[ (pending.size() % (pair_size / 2)) ]\t" DEF << (pending.size() % (pair_size / 2)) << ";\n";
-		// std::cout << YEL "[ distance from pivot ]\t" DEF << (*insertion_pivot - (*insertion_pivot % (pair_size / 2))) - pending.size() + (pending.size() % (pair_size / 2)) << ";\n";
-		std::cout << YEL "[ distance from pivot ]\t" DEF << (*insertion_pivot - (*insertion_pivot % (pair_size / 2))) << ";\n";
+		std::cout << YEL "[ curr jacob insertions ]\t" DEF << *insertion_pivot << ";\n";
+		// std::cout << YEL "[ distance from pivot ]\t" DEF << (*insertion_pivot - (*insertion_pivot % (pair_size / 2))) << ";\n";
+		// std::cout << YEL "[ distance from pivot ]\t" DEF << *insertion_pivot - pending.size() - (pair_size / 2) + 1 << ";\n";
+		std::cout << YEL "[ distance from pivot ]\t" DEF << *insertion_pivot - pending.size() << ";\n";
 
 		// if (is_odd && insertion_pivot == jacob.end() - 1)
 			// offset -= pair_size / 2;
 		
 		std::cout << YEL "[ offset ]\t" DEF << offset << ";\n";
 
-		sleep(1);
-
+		// sleep(1);
 
 
 
 
 		for (vector2::iterator it = begin; it < end - (pair_size / 2); it++)
 		{
-			pending.push_back(std::make_pair(*it, main_chain.end() + (pair_size / 2) + offset));
+			pending.push_back(std::make_pair(*it, main_chain.end() + offset));
 			std::cout << YEL "[ added to pending ]\t" DEF;
 			std::cout << (pending.end() - 1)->first.first << " (b) " BLK << (pending.end() - 1)->second->first << DEF "\n";
 		}
@@ -307,8 +295,16 @@ void PmergeMe::prep_segment_insertion_vec(vector2 &main_chain, vector2_match &pe
 
 	if (is_odd)
 	{
+		// for (size_t i = 0; i < (pair_size / 2); i++)
+		// 	pending.push_back(std::make_pair(*(begin++), main_chain.end() + 1 + (insertion_pivot == jacob.begin() ? 0 : *(insertion_pivot - 1) + pair_size + (pair_size / 2))));
+	
 		for (size_t i = 0; i < (pair_size / 2); i++)
-			pending.push_back(std::make_pair(*(begin++), main_chain.end() + 1 + (insertion_pivot == jacob.begin() ? 0 : *(insertion_pivot - 1) + pair_size + (pair_size / 2))));
+		{
+
+			std::cout << YEL "[ prev jacob insertions ]\t" DEF << (insertion_pivot == jacob.begin() ? 0 : *(insertion_pivot - 1)) << ";\n";
+			std::cout << YEL "[ distance from anchor ]\t" DEF << ((pair_size / 2) - i - 1) << ";\n";
+			pending.push_back(std::make_pair(*(begin++), main_chain.end() - 1 + (insertion_pivot == jacob.begin() ? 0 : *(insertion_pivot - 1)) + ((pair_size / 2) - i - 1)));
+		}
 	}
 
 	std::cout << YEL "[ main chain ]\t" DEF;
@@ -343,17 +339,11 @@ void PmergeMe::binary_insert_segment_vec(vector2 &main_chain, vector2_match &pen
 	std::cout << ";" << std::endl;
 	std::cout << std::endl;	
 
-	(void)main_chain;
-	(void)pending;
-	(void)jacob;
-	(void)elem_size;
-
 	vector2_match::iterator curr_insert;
 	vector2_match::iterator already_inserted =  pending.begin() - 1;
 
 	for (vec_size::iterator curr_jacob = jacob.begin(); curr_jacob != jacob.end(); curr_jacob++)
 	{
-		(void)already_inserted;
 		curr_insert = (pending.begin() + *curr_jacob >= pending.end() ? pending.end() - 1 : pending.begin() + *curr_jacob);
 
 		while (curr_insert > already_inserted)
@@ -371,23 +361,30 @@ void PmergeMe::binary_insert_segment_vec(vector2 &main_chain, vector2_match &pen
 				std::cout << "(b)" << begin->first << " (e)" << end->first << ";\n";
 
 				std::cout << YEL "[ GAP ]\t" DEF << (end - begin) << ";\n";
-				if (end - begin <= elem_size * 2)
+				if (end - begin <= elem_size)
 				{
 					vector2::iterator placement;
 					if (bigger_than(curr_insert->first.first, begin->first))
-						placement = end;
+						placement = end - (elem_size / 2);
 					else
-						placement = begin;
+						placement = begin - (elem_size / 2);
 						
-					for (vector2_match::iterator it = curr_insert - elem_size; it < curr_insert; it++)
+					for (vector2_match::iterator it = curr_insert - elem_size + 1; it <= curr_insert; it++)
 						main_chain.insert(placement++, it->first);
 					
 					std::cout << GRN "[ POSITION FOUND ]\n" DEF;
+
+					std::cout << YEL "[ new main chain ]\t" DEF;
+					for (vector2::const_iterator it = main_chain.begin(); it != main_chain.end(); it++)
+						std::cout << it->first << " ";
+					std::cout << ";" << std::endl;
+
 					break;
 				}
 
-				vector2::iterator anchor = begin + ((end - begin - 2) / 2);
-				std::cout << YEL "[ DIFF ]\t" DEF << (end - begin) << ";\n";
+				std::cout << YEL "[ DIFF IN CHUNCKS ]\t" DEF << ((((end - begin) / elem_size) / 2) * elem_size) << ";\n";
+
+				vector2::iterator anchor = begin + ((((end - begin) / elem_size) / 2) * elem_size);
 				std::cout << YEL "[ anchor ]\t" DEF << anchor->first << ";\n";
 
 				if (bigger_than(curr_insert->first.first, anchor->first))
@@ -396,15 +393,7 @@ void PmergeMe::binary_insert_segment_vec(vector2 &main_chain, vector2_match &pen
 					end = anchor;
 
 
-
-
-
-
-
-
-
-
-				sleep(2);
+				// sleep(2);
 			}
 
 
@@ -412,6 +401,8 @@ void PmergeMe::binary_insert_segment_vec(vector2 &main_chain, vector2_match &pen
 			curr_insert -= elem_size;
 		}
 
+		std::cout << GRN "\n[ CURR JACOB DONE ]\n\n" DEF;
+		already_inserted = (pending.begin() + *curr_jacob >= pending.end() ? pending.end() - 1 : pending.begin() + *curr_jacob);
 
 
 
@@ -419,98 +410,6 @@ void PmergeMe::binary_insert_segment_vec(vector2 &main_chain, vector2_match &pen
 
 	}
 
-}
-
-void PmergeMe::old_merge_vec(vector2 &vec, vector2::iterator begin, vector2::iterator end)
-{
-	std::cout << "\nbegin: ";
-	std::cout << "(b)" << begin->first << BLK "\t(s)" << begin->second << DEF "\n";
-	std::cout << "end: ";
-	std::cout << "(b)" << end->first << BLK "\t(s)" << end->second << DEF "\n";
-
-	if (end - begin < 1 )
-	{
-		std::cout << YEL "solo element" DEF << std::endl;
-		return ;
-	}
-	
-	vector2::iterator pivot = begin + ((end - begin + 1) / 2);
-
-	std::cout << "end - begin + 1: " << (end - begin + 1);
-	std::cout << " / by 2: " << ((end - begin + 1) / 2) << std::endl;
-	std::cout << "pivot: ";
-	std::cout << "(b)" << pivot->first << BLK " \t\t(s)" << pivot->second << DEF "\n";
-	
-	old_merge_vec(vec, begin, pivot - (begin != pivot));
-	old_merge_vec(vec, pivot + (begin == pivot), end);
-	
-	std::cout << RED "\nbefore merge swapping\n" DEF;
-	for (vector2::const_iterator it = vec.begin(); it != vec.end(); it++)
-		std::cout << "(b)" << it->first << BLK " \t\t(s)" << it->second << DEF "\n";
-	
-	merge_swap_segment_vec(begin, end);
-	
-	for (vector2::const_iterator it = vec.begin(); it != vec.end(); it++)
-		std::cout << "(b)" << it->first << BLK " \t\t(s)" << it->second << DEF "\n";
-}
-
-void PmergeMe::merge_swap_segment_vec(vector2::iterator begin, vector2::iterator end)
-{
-	vector2::iterator anchor = begin + ((end - begin + 1) / 2);
-
-	std::cout << YEL "\nmerge swapping:\t" DEF;
-	std::cout << "(b)" << begin->first << BLK "\t(s)" << begin->second;
-	std::cout << DEF "\t\t(b)" << end->first << BLK "\t(s)" << end->second << DEF "\n";
-	std::cout << YEL "end - begin + 1: " DEF << (end - begin + 1);
-	std::cout << YEL " / by 2: " DEF << ((end - begin + 1) / 2) << std::endl;
-	std::cout << YEL "anchor:\t\t" DEF;
-	std::cout << "(b)" << anchor->first << BLK " \t(s)" << anchor->second << DEF "\n\n";
-
-	// sorting pairs of pairs based on the anchor (leaving it unsorted) 
-	// if (bigger_than(begin->first, anchor->first))
-	// {
-	// 	if (!((end - begin + 1) % 2))
-	// 	{
-	// 		std::swap_ranges(begin, anchor, anchor);
-	// 		std::cout << RED "\npost swap ranges...\n" DEF;
-	// 	}
-	// 	else
-	// 	{
-	// 		while (anchor <= end)
-	// 		{
-	// 			std::cout << "\nanchor in loop: ";
-	// 			std::cout << "(b)" << anchor->first << BLK " \t\t(s)" << anchor->second << DEF "\n";
-	// 			std::swap(*begin, *anchor);
-	// 			anchor++;
-	// 			begin++;
-	// 		}
-	// 		std::cout << RED "\nOTHER swap...\n" DEF;
-	// 	}
-	// }
-	// else
-	// 	std::cout << GRN "\ncorrect order!\n" DEF;
-
-	// merge sort (temporary, to be replaced with merge insert)
-	while (begin <= end && anchor <= end)
-	{
-		if (bigger_than(begin->first, anchor->first))
-		{
-			std::cout << RED "swap an w/ bg:\t" DEF;
-			std::cout << "(b)" << anchor->first << BLK "\t(s)" << anchor->second;
-			std::cout << DEF "\t\t(b)" << begin->first << BLK "\t(s)" << begin->second << DEF "\n";
-
-			std::pair<int, int> temp = *anchor;
-			std::copy_backward(begin, anchor, anchor + 1);
-			*begin = temp;
-			anchor++;
-		}
-		else
-			std::cout << GRN "correct order\n" DEF;
-		begin++;
-		if (begin == anchor)
-			anchor++;
-	}
-	std::cout << std::endl;
 }
 
 void PmergeMe::prep_for_insertion_vec(vec_int &main_chain, vec_match &pending, vec_size &jacob, vector2 &pairs, bool &is_odd)

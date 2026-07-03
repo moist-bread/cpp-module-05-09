@@ -65,10 +65,6 @@ private:
 	void prep_segment_insertion_vec(vector2 &main_chain, vector2_match &pending, vec_size &jacob, vector2 &pairs, size_t pair_size);
 	void binary_insert_segment_vec(vector2 &main_chain, vector2_match &pending, vec_size &jacob, int elem_size);
 
-
-
-	void old_merge_vec(vector2 &vec, vector2::iterator begin, vector2::iterator end);
-	void merge_swap_segment_vec(vector2::iterator begin, vector2::iterator end);
 	void prep_for_insertion_vec(vec_int &main_chain, vec_match &pending, vec_size &jacob, vector2 &pairs, bool &is_odd);
 	void binary_insert_vec(vec_int &main_chain, vec_match &pending, vec_size &jacob);
 	
