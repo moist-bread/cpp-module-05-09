@@ -5,7 +5,7 @@ NAME	=	PmergeMe
 CXX			=	c++
 CXXFLAGS	=	-Wall -Wextra -Werror -g -std=c++98 -D DEBUG=$(DEBUG)
 VAL			=	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes -s
-DEBUG		=	1
+DEBUG		=	0
 
 # -->┊( DIRECTORIES )┊.´-★☆★
 SRC_DIR	=	src
@@ -55,7 +55,7 @@ rexe: re
 	./$(NAME) 11 2 17 0 16 8 6 15 10 3 21 1 18 9 14 19 12 5 4 20 13 7
 
 val: all
-	$(VAL) ./$(NAME) 7777777777777
+	$(VAL) ./$(NAME)  28 12 6 22 25 30 7 13 18 11 3 4 17 23 15 1 20 21 10 16 19 26 2 8 29 27 5 14 24 9
 
 debug:
 	make all DEBUG=1
