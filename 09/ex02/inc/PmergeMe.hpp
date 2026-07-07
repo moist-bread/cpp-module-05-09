@@ -8,7 +8,7 @@
 #include <iomanip>
 #include <limits>
 #include <vector>
-#include <deque>
+#include <list>
 #include <stdlib.h>
 #include <unistd.h>
 #include <ctime>
@@ -38,15 +38,20 @@ public:
 	~PmergeMe(void);	// destructor
 	PmergeMe &operator=(PmergeMe const &source);	// copy assignment operator overload
 	
+	
 	typedef std::vector<int> vec_int;
 	typedef std::vector<std::pair<int, vec_int::iterator> > vec_match;
-	
 	typedef std::vector<size_t> vec_size;
+	
+	
+	typedef std::list<int> list_int;
+	typedef std::list<std::pair<int, list_int::iterator> > list_match;
+	typedef std::list<size_t> list_size;
 
 private:
 	PmergeMe(void);	// default constructor
 	vec_int _array_vec;
-	std::deque<int> _array_deque;
+	list_int _array_list;
 	time_t _bench_start_time;
 	time_t _bench_end_time;
 	size_t _comp_amount;
@@ -55,17 +60,30 @@ private:
 	void print_time(std::string container) const;
 	void print_comp(std::string container) const;
 
-	void pair_print_vec(const vec_int &vec, size_t pair_size) const;
+	void pair_print_vec(const size_t pair_size) const;
+	void pair_print_list(const size_t pair_size) const;
 
 	void sort_vec(void);
-	void merge_vec(vec_int &vec, size_t pair_size);
-	void merge_sort_segments_vec(vec_int &vec, size_t pair_size);
-	void insert_segments_vec(vec_int &vec, size_t pair_size);
-	void prep_segment_insertion_vec(vec_int &main_chain, vec_match &pending, vec_size &jacob, vec_int &pairs, size_t pair_size);
+	void merge_vec(const size_t pair_size);
+	void merge_sort_segments_vec(const size_t pair_size);
+	void insert_segments_vec(const size_t pair_size);
+	void prep_segment_insertion_vec(vec_int &main_chain, vec_match &pending, vec_size &jacob, const size_t pair_size);
 	void binary_insert_segment_vec(vec_int &main_chain, vec_match &pending, vec_size &jacob, int elem_size);
 	void binary_search_vec(vec_int &main_chain, int elem_size, vec_match::iterator &curr_insert);
 
-	void sort_deque(void);
+	void sort_list(void);
+	void merge_list(const size_t pair_size);
+	void merge_sort_segments_list(const size_t pair_size);
+	void insert_segments_list(const size_t pair_size);
+	void prep_segment_insertion_list(list_int &main_chain, list_match &pending, list_size &jacob, const size_t pair_size);
+	void binary_insert_segment_list(list_int &main_chain, list_match &pending, list_size &jacob, int elem_size);
+	void binary_search_list(list_int &main_chain, int elem_size, list_match::iterator &curr_insert);
+
+	list_int::iterator safe_move_list_iterator(list_int::iterator it, const int distance, const list_int &list) const;
+	list_int::iterator move_list_iterator(list_int::iterator it, const int distance) const;
+	
+	list_match::iterator safe_move_list_match_iterator(list_match::iterator it, const int distance, const list_match &list) const;
+	list_match::iterator move_list_match_iterator(list_match::iterator it, const int distance) const;
 	
 	static time_t get_curr_time(void);
 	bool bigger_than(int x, int y);
