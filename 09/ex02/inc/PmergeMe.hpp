@@ -56,18 +56,15 @@ private:
 	time_t _bench_end_time;
 	size_t _comp_amount;
 	
-	void print_array(std::string str) const;
 	void print_time(std::string container) const;
 	void print_comp(std::string container) const;
-
-	void pair_print_vec(const size_t pair_size) const;
-	void pair_print_list(const size_t pair_size) const;
 
 	void sort_vec(void);
 	void merge_vec(const size_t pair_size);
 	void merge_sort_segments_vec(const size_t pair_size);
 	void insert_segments_vec(const size_t pair_size);
 	void prep_segment_insertion_vec(vec_int &main_chain, vec_match &pending, vec_size &jacob, const size_t pair_size);
+	void add_odd_elements_vec(vec_int &main_chain, vec_match &pending, vec_size &jacob, const size_t elem_size, vec_int::iterator &begin);
 	void binary_insert_segment_vec(vec_int &main_chain, vec_match &pending, vec_size &jacob, int elem_size);
 	void binary_search_vec(vec_int &main_chain, int elem_size, vec_match::iterator &curr_insert);
 
@@ -76,15 +73,10 @@ private:
 	void merge_sort_segments_list(const size_t pair_size);
 	void insert_segments_list(const size_t pair_size);
 	void prep_segment_insertion_list(list_int &main_chain, list_match &pending, list_size &jacob, const size_t pair_size);
+	void add_odd_elements_list(list_int &main_chain, list_match &pending, list_size &jacob, const size_t elem_size, list_int::iterator &begin);
 	void binary_insert_segment_list(list_int &main_chain, list_match &pending, list_size &jacob, int elem_size);
 	void binary_search_list(list_int &main_chain, int elem_size, list_match::iterator &curr_insert);
 
-	list_int::iterator safe_move_list_iterator(list_int::iterator it, const int distance, const list_int &list) const;
-	list_int::iterator move_list_iterator(list_int::iterator it, const int distance) const;
-	
-	list_match::iterator safe_move_list_match_iterator(list_match::iterator it, const int distance, const list_match &list) const;
-	list_match::iterator move_list_match_iterator(list_match::iterator it, const int distance) const;
-	
 	static time_t get_curr_time(void);
 	bool bigger_than(int x, int y);
 	size_t jacobsthal_gen(size_t n) const;
