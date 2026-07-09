@@ -3,6 +3,7 @@
 #include <iostream>
 #include <ctype.h> // isdigit
 #include <algorithm> // count
+#include <limits> // numeric_limits
 
 std::stack<int> RPN::_nums;
 const char *RPN::_operators = "+-/*";
@@ -63,7 +64,6 @@ void RPN::process_expression(std::string exp)
 	std::cout << "result = " << RPN::_nums.top() << std::endl;
 }
 
-#include <limits>
 
 void RPN::operation(const char &op)
 {

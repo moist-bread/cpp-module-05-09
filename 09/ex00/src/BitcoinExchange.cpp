@@ -63,6 +63,9 @@ void BitcoinExchange::load_base_dataset(const std::string input)
 void BitcoinExchange::exchange_input(const std::string input)
 {
 	std::ifstream input_file(input.c_str(), std::ifstream::in);
+	if (!input_file.is_open())
+		throw(std::runtime_error("input file \"" + input + "\" was unable to be opened" ));
+	
 	bool header_found = false;
 
 	while (input_file.good())
@@ -101,7 +104,7 @@ Date BitcoinExchange::extract_date(const std::string &input)
 float BitcoinExchange::extract_value(const std::string &input, const unsigned int &separator_size)
 {
 	if (input.length() < 10 + separator_size + 1)
-		throw(std::runtime_error("absent value"));
+		throw(std::runtime_error("incorrectly formatted line"));
 
 	int n = NOT_SET;
 	float f = NOT_SET;
@@ -128,6 +131,9 @@ float BitcoinExchange::extract_value(const std::string &input, const unsigned in
 
 void BitcoinExchange::print_exchange(const std::string &input)
 {
+	if (input.find(" | ") != 10)
+		throw(std::runtime_error("incorrectly formatted line"));
+
 	std::pair<Date, float> set(BitcoinExchange::extract_date(input), BitcoinExchange::extract_value(input, 3));
 
 	if (set.first < _base_dataset.begin()->first)

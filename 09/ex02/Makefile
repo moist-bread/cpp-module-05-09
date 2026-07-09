@@ -60,7 +60,6 @@ val: all
 debug:
 	make all DEBUG=1
 	./$(NAME) `shuf -i 1-31 -n 31 | tr "\n" " "`
-# 	./$(NAME) 6 14 5 12 1 3 7 13 8 2 11 15 4 10 9 16
 
 .PHONY: all clean fclean re exe rexe val debug
 

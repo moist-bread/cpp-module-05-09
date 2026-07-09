@@ -2,18 +2,12 @@
 #define PMERGE_ME_HPP
 
 //-‵,┊ needed libs by class
-#include <iostream>
-#include <string>
-#include <cmath>
-#include <iomanip>
-#include <limits>
+
 #include <vector>
 #include <list>
-#include <stdlib.h>
-#include <unistd.h>
-#include <ctime>
+#include <string>
+#include <stddef.h>
 #include <sys/time.h>
-
 
 //-‵,┊ color defines
 
@@ -73,7 +67,6 @@ private:
 	void merge_sort_segments_list(const size_t pair_size);
 	void insert_segments_list(const size_t pair_size);
 	void prep_segment_insertion_list(list_int &main_chain, list_match &pending, list_size &jacob, const size_t pair_size);
-	void add_odd_elements_list(list_int &main_chain, list_match &pending, list_size &jacob, const size_t elem_size, list_int::iterator &begin);
 	void binary_insert_segment_list(list_int &main_chain, list_match &pending, list_size &jacob, int elem_size);
 	void binary_search_list(list_int &main_chain, int elem_size, list_match::iterator &curr_insert);
 

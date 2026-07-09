@@ -1,9 +1,10 @@
 #include "../inc/PmergeMe.hpp"
+#include <iostream>
 
 int main(int ac, char **av)
 {
 	std::cout << std::endl;
-	std::cout << CYN ">>┈┈┈>   PMERGE ME 🔜🔎";
+	std::cout << CYN ">>┈┈┈>   PMERGE ME 🔢🎾";
 	std::cout << DEF << std::endl << std::endl;
 
 	if (ac < 2)

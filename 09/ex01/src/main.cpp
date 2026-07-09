@@ -4,7 +4,7 @@
 
 int main(int ac, char **av)
 {
-	std::cout << CYN "\n>>┈┈┈>   REVERSE POLISH NOTATION 🔜🔎\n\n" DEF;
+	std::cout << CYN "\n>>┈┈┈>   REVERSE POLISH NOTATION 🧮⏪\n\n" DEF;
 
 	if (ac != 2)
 		return (std::cout << "usage: ./RPN [numbers and operators]" << std::endl, 2);

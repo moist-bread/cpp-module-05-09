@@ -38,7 +38,7 @@ public:
 	class InvalidDate : public std::runtime_error
 	{
 	public:
-		InvalidDate(const std::string &date) : runtime_error("invalid date \"" + date + "\"" ) {};
+		InvalidDate(const std::string &date) : runtime_error("invalid date (" + date + ")" ) {};
 	};
 	
 private:

@@ -87,11 +87,11 @@ void Date::extract_date(std::string &input)
 void Date::validate_date(void)
 {
 	if (year < 1)
-		throw(InvalidDate(var_to_str(year)));
+		throw(InvalidDate("year " + var_to_str(year)));
 	if (month < 1 || month > 12)
-		throw(InvalidDate(var_to_str(month)));
+		throw(InvalidDate("month " + var_to_str(month)));
 	if (day < 1 || day > Date::get_days_in_month(month, year))
-		throw(InvalidDate(var_to_str(day)));
+		throw(InvalidDate("day " + var_to_str(day)));
 
 }
 

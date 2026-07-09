@@ -2,6 +2,7 @@
 #define UTILS_TPP
 
 #include <sstream> // stringstream
+#include <iostream> // cout
 
 template <typename T>
 T str_to_num(const std::string &str)

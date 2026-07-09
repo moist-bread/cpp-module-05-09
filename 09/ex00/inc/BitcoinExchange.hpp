@@ -27,10 +27,10 @@ public:
 	static void exchange_input(const std::string input);
 
 private:
-	BitcoinExchange(void);									   // default constructor
-	BitcoinExchange(BitcoinExchange const &source);			   // copy constructor
-	~BitcoinExchange(void);									   // destructor
-	BitcoinExchange &operator=(BitcoinExchange const &source); // copy assignment operator overload
+	BitcoinExchange(void);	// default
+	BitcoinExchange(BitcoinExchange const &source);	// copy
+	~BitcoinExchange(void);	// destructor
+	BitcoinExchange &operator=(BitcoinExchange const &source);	// copy assignment
 
 	static std::map<Date, float> _base_dataset;
 

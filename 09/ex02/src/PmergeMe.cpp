@@ -12,7 +12,7 @@ PmergeMe::PmergeMe(char **av): _bench_start_time(0), _bench_end_time(0), _comp_a
 	for (size_t i = 0; av[i]; i++)
 	{
 		_array_vec.push_back(str_to_num<int>(av[i]));
-		if (_array_vec.back() <= 0)
+		if (_array_vec.back() < 0)
 			throw(std::runtime_error("non positive integer not allowed: \"" + var_to_str(av[i]) + "\"" ));
 		else if (std::count(_array_vec.begin(), _array_vec.end(), _array_vec.back()) > 1)
 			throw(std::runtime_error("repeated integer not allowed: \"" + var_to_str(av[i]) + "\"" ));
